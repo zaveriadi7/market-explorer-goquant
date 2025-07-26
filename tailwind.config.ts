@@ -53,7 +53,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom colors matching the GoQuant theme
         gray: {
           900: "#111111", // Slightly lighter than black for cards
           800: "#1a1a1a", // Very dark gray for borders

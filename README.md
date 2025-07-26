@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Market Seasonality Explorer
 
-## Getting Started
+An advanced cryptocurrency analytics platform for visualizing and analyzing market seasonality patterns, price movements, and technical indicators.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Real-time Price Tracking**: Live cryptocurrency data from the Binance API  
+- **Interactive Calendar View**: Visualize historical and seasonal market performance  
+- **Technical Analysis**: Key indicators including RSI, Moving Averages, and more  
+- **Market Comparison Tool**: Compare behavior between different dates to identify seasonality trends  
+- **Detailed Metrics**: Analyze OHLC, volume, volatility, and price action  
+- **Responsive Design**: Fully optimized for both desktop and mobile devices  
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15.4, React 19.1, TypeScript  
+- **Styling**: Tailwind CSS (Custom UI components)  
+- **Charts**: Recharts for rich data visualization  
+- **API Integration**: Binance API for real-time cryptocurrency data  
+- **Real-time Updates**: WebSocket support for live price feeds  
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js 18.0 or later  
+- npm or yarn package manager  
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/market-explorer-goquant.git
+   cd market-explorer-goquant
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. **Open in your browser**
+
+   Visit [http://localhost:3000](http://localhost:3000)
+
+## 🧭 Usage Guide
+
+### 📅 Main Dashboard
+
+View the calendar with color-coded daily metrics based on volatility, price performance, and volume.
+
+### 📊 Detailed Analysis
+
+Click on any date to access detailed breakdowns:
+
+- OHLC data  
+- Volume analytics  
+- RSI and Moving Averages  
+- Volatility scores  
+
+### 🔍 Comparison Tool
+
+Use the **Compare** page to select two dates and evaluate differences in performance to uncover seasonal or behavioral patterns.
+
+## 📁 Project Structure
+
+```
+├── app/                       # Next.js app directory
+│   ├── compare/               # Market comparison page
+│   └── page.tsx               # Main dashboard
+├── components/                # Reusable React components
+│   ├── charts/                # Chart-specific components
+│   └── ui/                    # Custom UI elements
+├── hooks/                     # Custom React hooks
+├── lib/                       # Utility functions and API clients
+│   ├── binance-api.ts         # Binance API integration logic
+│   └── websocket-manager.ts   # Real-time WebSocket handling
+└── public/                    # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗️ Development & Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+# or
+yarn build
+```
 
-## Learn More
+### Run Production Build
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run start
+# or
+yarn start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📜 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
-## Deploy on Vercel
+## 🙏 Acknowledgments
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Binance API](https://binance.com/) for providing comprehensive market data  
+- [Next.js](https://nextjs.org/) for the robust React framework  
+- [Tailwind CSS](https://tailwindcss.com/) for modern UI styling  
+- [Recharts](https://recharts.org/) for data visualization  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+> Built with ❤️ by Aditya Zaveri

@@ -147,7 +147,6 @@ export function DetailPanel({ isOpen, onClose, selectedDate, selectedInstrument,
         console.log("Error sharing:", error)
       }
     } else {
-      // Fallback: copy to clipboard
       const textToCopy = `${shareData.title}\n${shareData.text}\n${shareData.url}`
       navigator.clipboard.writeText(textToCopy).then(() => {
         alert("Data copied to clipboard!")

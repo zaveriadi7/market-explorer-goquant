@@ -32,7 +32,7 @@ const formatDateUTC = (dateString: string) => {
 
 export function PriceChart({ data, title = "Price Movement", height = 300 }: PriceChartProps) {
   const chartData = data.map((item) => ({
-    date: item.date, // keep as raw ISO string!
+    date: item.date, 
     price: item.close,
     high: item.high,
     low: item.low,
