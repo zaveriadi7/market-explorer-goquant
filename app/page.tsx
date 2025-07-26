@@ -1,8 +1,12 @@
 "use client";
 
+import { LeftSidebar } from "@/components/left-sidebar";
 import { TopNavigation } from "@/components/top-navigation";
+import { Button } from "@/components/ui/button";
 import { useRealtimeData } from "@/hooks/use-realtime-data";
 import { useTechnicalData } from "@/hooks/use-technical-data";
+import { cn } from "@/lib/utils";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function MockPage() {
@@ -11,6 +15,13 @@ export default function MockPage() {
   const [selectedInstrument, setSelectedInstrument] = useState("BTC/USDT");
   const [timeframe, setTimeframe] = useState("Daily");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
+  const [rightPanelOpen, setRightPanelOpen] = useState(false);
+  const [selectedMetrics, setSelectedMetrics] = useState([
+    "Volatility",
+    "Performance",
+  ]);
+
   // Simulate price changes for testing thresholds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,8 +58,57 @@ export default function MockPage() {
         priceChange={Math.random() * 10 - 5} // Random % between -5% to +5%
         coinSymbol="BTC"
       />
-      {JSON.stringify(technicalData)}
+      {/* {JSON.stringify(technicalData)} */}
+      <div className="flex h-[calc(100vh-80px)]">
+        {/* Enhanced Mobile menu button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(
+            "fixed top-4 right-4 z-50 md:hidden transition-all duration-500 transform hover:scale-110 group",
+            "bg-gray-900/80 backdrop-blur-xl hover:bg-gray-800/80 border border-gray-700/50 shadow-2xl rounded-xl w-9 h-9",
+            leftSidebarOpen && "rotate-180"
+          )}
+          onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}
+        >
+          <div className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+          {leftSidebarOpen ? (
+            <X className="h-5 w-5 relative z-10" />
+          ) : (
+            <Menu className="h-5 w-5 relative z-10" />
+          )}
+        </Button>
 
+        {/* Left Sidebar */}
+        <div
+          className={cn(
+            "fixed inset-y-0 left-0 top-0 z-40 w-80 transform transition-all duration-700 ease-in-out",
+            "md:relative md:top-0 md:translate-x-0 md:z-0",
+            leftSidebarOpen ? "translate-x-0" : "-translate-x-full",
+            "shadow-2xl md:shadow-none"
+          )}
+        >
+          <LeftSidebar
+            selectedInstrument={selectedInstrument}
+            setSelectedInstrument={setSelectedInstrument}
+            timeframe={timeframe}
+            setTimeframe={setTimeframe}
+            selectedMetrics={selectedMetrics}
+            setSelectedMetrics={setSelectedMetrics}
+            isConnected={isConnected}
+            lastUpdated={lastUpdated}
+            onRefresh={refetch}
+          />
+        </div>
+
+        {/* Enhanced Mobile overlay */}
+        {leftSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden transition-all duration-500"
+            onClick={() => setLeftSidebarOpen(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }
