@@ -32,6 +32,7 @@ interface CalendarGridProps {
   onDateSelect: (date: string) => void;
   selectedDate: string | null;
   selectedInstrument: string;
+  currentPrice: number;
 }
 
 interface TooltipData {
@@ -58,6 +59,7 @@ export function CalendarGrid({
   onDateSelect,
   selectedDate,
   selectedInstrument,
+  currentPrice,
 }: CalendarGridProps) {
   const [hoveredCell, setHoveredCell] = useState<TooltipData | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -895,7 +897,7 @@ export function CalendarGrid({
               <div>
                 <div className="text-gray-400 font-medium">Current Price</div>
                 <PriceIndicator
-                  price={Number.parseFloat(ticker.lastPrice)}
+                  price={Number.parseFloat(currentPrice)}
                   change={priceChange}
                   className="text-lg font-mono"
                 />

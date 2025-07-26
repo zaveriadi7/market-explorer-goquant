@@ -217,6 +217,7 @@ export default function MarketSeasonalityExplorer() {
                   onDateSelect={handleDateSelect}
                   selectedDate={selectedDate}
                   selectedInstrument={selectedInstrument}
+                  currentPrice={currentPrice}
                 />
               ) : (
                 <div className="p-6">
