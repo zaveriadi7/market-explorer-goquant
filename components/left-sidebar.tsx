@@ -30,6 +30,7 @@ interface LeftSidebarProps {
   isConnected?: boolean;
   lastUpdated?: Date | null;
   onRefresh?: () => void;
+  variant?: "compare" | "default";
 }
 
 const instruments = [
@@ -138,6 +139,7 @@ export function LeftSidebar({
   isConnected = false,
   lastUpdated,
   onRefresh,
+  variant = "default",
 }: LeftSidebarProps) {
   const handleMetricChange = (metric: string, checked: boolean) => {
     if (checked) {
@@ -161,29 +163,23 @@ export function LeftSidebar({
         <div className="relative group">
           <div className="absolute -inset-2 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
         </div>
-        <a href="/compare">
+        <a href={variant === "compare" ?  "/" : "/compare" }>
           <Button
-            className="ml-1 mb-4 relative group h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base w-full md:w-min rounded-xl overflow-hidden 
-             transition-all duration-500 transform hover:scale-105 
-             bg-black/20 hover:bg-green-600/30 
-             text-green-200 hover:text-green-100 
-             border border-green-400/40 hover:border-green-300/70 
-             shadow-[0_0_10px_2px_rgba(34,197,94,0.4)] hover:shadow-[0_0_15px_4px_rgba(34,197,94,0.6)]
-             backdrop-blur-sm"
+            className="ml-1 mb-4 relative group h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base w-full md:w-min lg:w-full rounded-xl overflow-hidden 
+     transition-all duration-500 transform hover:scale-105 
+     bg-black/20 hover:bg-green-600/30 
+     text-green-200 hover:text-green-100 
+     border border-green-400/40 hover:border-green-300/70 
+     shadow-[0_0_10px_2px_rgba(34,197,94,0.4)] hover:shadow-[0_0_15px_4px_rgba(34,197,94,0.6)]
+     backdrop-blur-sm"
           >
-            {/* Glowing background gradient animation */}
             <div
               className="absolute inset-0 bg-gradient-to-br from-green-400/30 via-transparent to-green-700/20 
-                  opacity-30 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none"
+                opacity-30 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none"
             />
-
-            <BarChart3 className="w-3 h-3 sm:w-5 sm:h-5  text-green-300 drop-shadow-[0_0_3px_rgba(34,197,94,0.7)] relative z-10" />
-
-            <span
-              className="font-semibold relative z-10 whitespace-nowrap 
-                   text-shadow-[0_0_2px_rgba(34,197,94,0.8)]"
-            >
-              Compare between dates
+            <BarChart3 className="w-3 h-3 sm:w-5 sm:h-5 text-green-300 drop-shadow-[0_0_3px_rgba(34,197,94,0.7)] relative z-10" />
+            <span className="font-semibold relative z-10 whitespace-nowrap text-shadow-[0_0_2px_rgba(34,197,94,0.8)]">
+              {variant === "compare" ? "Go back home":"Compare between dates"}
             </span>
           </Button>
         </a>
