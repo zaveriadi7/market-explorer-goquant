@@ -124,7 +124,7 @@ export default function MarketSeasonalityExplorer() {
           {/* Enhanced Main Content */}
           <div className="flex-1 flex flex-col min-w-0 bg-gradient-to-br from-gray-900/30 to-black/30 backdrop-blur-sm">
             {/* Enhanced View Toggle */}
-            <div className="relative p-6 border-b border-gray-800/50 bg-gradient-to-r from-gray-900/30 to-gray-800/30 backdrop-blur-xl">
+            <div className="relative p-6  bg-black/10 backdrop-blur-xl">
               <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-blue-500/5"></div>
               <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                 {/* Button Group */}

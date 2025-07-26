@@ -108,7 +108,7 @@ export function TopNavigation({
     <>
       {/* Main Navbar */}
       <nav className="relative bg-gradient-to-r from-gray-900 via-black to-gray-900 border-b border-gray-800/50 px-3 py-3 md:px-4 md:py-4 shadow-2xl backdrop-blur-xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-blue-500/5 animate-pulse pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-blue-900/5 animate-pulse pointer-events-none z-0" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
           {/* Logo & Title */}
           <div className="flex items-start sm:items-center gap-3 md:gap-4">
