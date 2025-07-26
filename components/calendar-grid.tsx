@@ -10,6 +10,8 @@ import {
   RefreshCw,
   Activity,
   Calendar,
+  ChevronLeft,
+  ChevronRight,
   TrendingUp,
   TrendingDown,
   Zap,
@@ -63,18 +65,14 @@ export function CalendarGrid({
 
   const instrument = selectedInstrument || "BTCUSDT";
 
-  // Helper function to format date consistently
   const formatDateString = (date: Date): string => {
-    // Always format as YYYY-MM-DD in UTC
     const year = date.getUTCFullYear();
     const month = String(date.getUTCMonth() + 1).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
-  // Helper function to parse date string consistently
   const parseDataDate = (dateString: string): Date => {
-    // Handle both ISO format and other formats
     const date = new Date(dateString + "T00:00:00.000Z");
     return date;
   };
@@ -84,14 +82,11 @@ export function CalendarGrid({
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
 
-    // For different timeframes, we need different ranges
     if (timeframe === "Monthly") {
-      // For monthly view, get full year data
       const start = new Date(year - 1, 0, 1); // Start from previous year
       const end = new Date(year + 1, 11, 31); // End at next year
       return { start, end };
     } else if (timeframe === "Weekly") {
-      // For weekly view, get current month + surrounding months
       const start = new Date(year, month - 2, 1);
       const end = new Date(year, month + 2, 0);
       return { start, end };
@@ -175,7 +170,6 @@ export function CalendarGrid({
       const date = new Date(Date.UTC(year, month, day));
       const dateString = formatDateString(date);
 
-      // Find matching market data with exact date comparison
       const marketData = data.find((d) => {
         const dataDate = parseDataDate(d.date);
         const dataDateString = formatDateString(dataDate);
@@ -366,10 +360,41 @@ export function CalendarGrid({
   };
 
   // Calendar Header - Update to show different headers based on timeframe
-  
+  const getCalendarHeaders = () => {
+    switch (timeframe) {
+      case "Weekly":
+        return Array.from({ length: 6 }, (_, i) => `Week ${i + 1}`);
+      case "Monthly":
+        return [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+      default:
+        return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    }
+  };
 
   // --- Update getGridCols to always return fixed columns for week/month ---
-  
+  const getGridCols = () => {
+    switch (timeframe) {
+      case "Weekly":
+        return "grid-cols-6"; // Always 6 columns for weeks
+      case "Monthly":
+        return "grid-cols-12"; // Always 12 columns for months
+      default:
+        return "grid-cols-7"; // Always 7 for daily (Sun-Sat)
+    }
+  };
 
   const calendarDays = generateCalendarDays();
 
@@ -402,16 +427,180 @@ export function CalendarGrid({
     }
   }, [data, currentMonth, calendarDays, timeframe]);
 
-  
+  const getHeatmapColor = (
+    intensity: number,
+    trend: string,
+    metric: string
+  ) => {
+    if (!selectedMetrics.includes(metric)) return "rgba(75, 85, 99, 0.3)"; // Gray if metric not selected
 
-    const formatVolume = (volume: number) => {
-        if (volume >= 1000000) {
-            return `${(volume / 1000000).toFixed(1)}M`;
-        } else if (volume >= 1000) {
-            return `${(volume / 1000).toFixed(1)}K`;
+    const baseOpacity = 0.3;
+    const maxOpacity = 0.8;
+    const opacity = baseOpacity + intensity * (maxOpacity - baseOpacity);
+
+    switch (metric) {
+      case "Volatility":
+        if (intensity > 0.7) return `rgba(239, 68, 68, ${opacity})`; // High volatility - Red
+        if (intensity > 0.4) return `rgba(245, 158, 11, ${opacity})`; // Medium volatility - Orange
+        return `rgba(34, 197, 94, ${opacity})`; // Low volatility - Green
+      case "Performance":
+        return trend === "up"
+          ? `rgba(34, 197, 94, ${opacity})` // Positive - Green
+          : `rgba(239, 68, 68, ${opacity})`; // Negative - Red
+      case "Liquidity":
+        return `rgba(59, 130, 246, ${opacity})`; // Blue for liquidity
+      default:
+        return `rgba(75, 85, 99, ${opacity})`;
+    }
+  };
+
+  const getCellBackgroundColor = (marketData: any) => {
+    if (!marketData || selectedMetrics.length === 0)
+      return "rgba(75, 85, 99, 0.3)";
+
+    // Combine colors based on selected metrics
+    const colors = selectedMetrics.map((metric) => {
+      switch (metric) {
+        case "Volatility":
+          return getHeatmapColor(
+            marketData.heatmapIntensity,
+            marketData.trend,
+            "Volatility"
+          );
+        case "Performance":
+          return getHeatmapColor(
+            Math.abs(marketData.performance) / 10,
+            marketData.trend,
+            "Performance"
+          );
+        case "Liquidity":
+          const volumeIntensity = Math.min(
+            marketData.volume / Math.max(...data.map((d) => d.volume)),
+            1
+          );
+          return getHeatmapColor(
+            volumeIntensity,
+            marketData.trend,
+            "Liquidity"
+          );
+        default:
+          return "rgba(75, 85, 99, 0.3)";
+      }
+    });
+
+    // Return the first color for simplicity, or blend them
+    return colors[0] || "rgba(75, 85, 99, 0.3)";
+  };
+
+  const getMetricIndicators = (marketData: any) => {
+    const indicators = [];
+
+    if (selectedMetrics.includes("Volatility")) {
+      indicators.push(
+        <div key="volatility" className="flex items-center space-x-1">
+          <Activity className="w-3 h-3 text-yellow-400" />
+          <span className="text-xs text-yellow-400">
+            {marketData.volatility.toFixed(1)}%
+          </span>
+        </div>
+      );
+    }
+
+    if (selectedMetrics.includes("Performance")) {
+      indicators.push(
+        <div key="performance" className="flex items-center space-x-1">
+          {marketData.trend === "up" ? (
+            <ArrowUp className="w-3 h-3 text-green-400" />
+          ) : (
+            <ArrowDown className="w-3 h-3 text-red-400" />
+          )}
+          <span
+            className={cn(
+              "text-xs",
+              marketData.trend === "up" ? "text-green-400" : "text-red-400"
+            )}
+          >
+            {marketData.performance > 0 ? "+" : ""}
+            {marketData.performance.toFixed(1)}%
+          </span>
+        </div>
+      );
+    }
+
+    if (selectedMetrics.includes("Liquidity")) {
+      indicators.push(
+        <div key="liquidity" className="flex items-center space-x-1">
+          <BarChart3 className="w-3 h-3 text-blue-400" />
+          <span className="text-xs text-blue-400">
+            {formatVolume(marketData.volume)}
+          </span>
+        </div>
+      );
+    }
+
+    return indicators;
+  };
+
+  const formatVolume = (volume: number) => {
+    if (volume >= 1000000) {
+      return `${(volume / 1000000).toFixed(1)}M`;
+    } else if (volume >= 1000) {
+      return `${(volume / 1000).toFixed(1)}K`;
+    }
+    return volume.toFixed(0);
+  };
+
+  const handleMouseEnter = (marketData: any, event: React.MouseEvent) => {
+    if (!marketData) return;
+
+    setHoveredCell({
+      date: marketData.date,
+      volatility: marketData.volatility,
+      performance: marketData.performance,
+      volume: marketData.volume,
+      high: marketData.high,
+      low: marketData.low,
+      close: marketData.close,
+    });
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredCell(null);
+  };
+
+  const handleDateClick = (calendarDay: CalendarDay) => {
+    if (!calendarDay.marketData || calendarDay.isEmpty) return;
+    console.log("Date clicked:", calendarDay.marketData.date);
+    onDateSelect(calendarDay.marketData.date);
+  };
+
+  const navigateMonth = (direction: "prev" | "next") => {
+    setCurrentMonth((prev) => {
+      const newDate = new Date(prev);
+      if (timeframe === "Monthly") {
+        // For monthly view, navigate by year
+        if (direction === "prev") {
+          newDate.setFullYear(newDate.getFullYear() - 1);
+        } else {
+          newDate.setFullYear(newDate.getFullYear() + 1);
         }
-        return volume.toFixed(0);
-    };
+      } else {
+        // For daily and weekly view, navigate by month
+        if (direction === "prev") {
+          newDate.setMonth(newDate.getMonth() - 1);
+        } else {
+          newDate.setMonth(newDate.getMonth() + 1);
+        }
+      }
+      console.log(`Navigating to: ${newDate.toISOString().split("T")[0]}`);
+      return newDate;
+    });
+  };
 
   // Add keyboard navigation handler
   const handleKeyDown = useCallback(
@@ -545,7 +734,7 @@ export function CalendarGrid({
           style={{
             left: Math.min(mousePosition.x + 15, window.innerWidth - 320),
             top: Math.max(mousePosition.y - 10, 10),
-            transform: "translate(-150%, -150%)",
+            transform: "translate(-150%, -150%)", // <-- combined
           }}
         >
           <div className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-2xl blur opacity-50"></div>
@@ -792,6 +981,102 @@ export function CalendarGrid({
         </div>
       )}
 
+      {/* Enhanced Metrics Legend */}
+      {selectedMetrics.length > 0 && (
+        <div className="relative group mb-4">
+          <div className="absolute -inset-1 bg-gradient-to-r from-purple-400/20 to-pink-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+          <div className="hidden sm:block relative p-4 bg-gray-900/50 rounded-xl border border-gray-800/50 backdrop-blur-sm">
+            <div className="text-sm font-bold text-white mb-3 flex items-center">
+              <Sparkles className="w-4 h-4 mr-2 text-purple-400" />
+              Active Metrics Legend:
+            </div>
+            <div className="flex flex-wrap gap-4 text-xs">
+              {selectedMetrics.includes("Volatility") && (
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1">
+                    <div className="w-3 h-3 bg-green-500 rounded shadow-lg shadow-green-500/50"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded shadow-lg shadow-yellow-500/50"></div>
+                    <div className="w-3 h-3 bg-red-500 rounded shadow-lg shadow-red-500/50"></div>
+                  </div>
+                  <span className="text-gray-400 font-medium">
+                    Volatility (Low → High)
+                  </span>
+                </div>
+              )}
+              {selectedMetrics.includes("Performance") && (
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1">
+                    <ArrowUp className="w-3 h-3 text-green-400" />
+                    <ArrowDown className="w-3 h-3 text-red-400" />
+                  </div>
+                  <span className="text-gray-400 font-medium">
+                    Performance (Positive/Negative)
+                  </span>
+                </div>
+              )}
+              {selectedMetrics.includes("Liquidity") && (
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded shadow-lg shadow-blue-500/50"></div>
+                  <span className="text-gray-400 font-medium">
+                    Liquidity (Volume)
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Month Navigation */}
+      <div className="relative group mb-4">
+        <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 to-cyan-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+        <div className="relative flex items-center justify-between p-4 bg-gray-900/50 rounded-xl border border-gray-800/50 backdrop-blur-sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigateMonth("prev")}
+            className="text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-300 rounded-lg group"
+            disabled={loading}
+          >
+            <ChevronLeft className="w-4 h-4  sm:mr-1" />
+            Previous
+          </Button>
+
+          <div className="text-center">
+            <h3 className="text-lg font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              {timeframe === "Monthly"
+                ? currentMonth.getFullYear().toString()
+                : currentMonth.toLocaleDateString("en-US", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+            </h3>
+            <p className="hidden sm:block text-xs text-gray-400 font-medium">
+              {data.length} total data points •{" "}
+              {calendarDays.filter((d) => d.marketData && !d.isEmpty).length}{" "}
+              {timeframe === "Monthly"
+                ? "months"
+                : timeframe === "Weekly"
+                ? "weeks"
+                : "days"}{" "}
+              with data
+            </p>
+          </div>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigateMonth("next")}
+            className="text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-300 rounded-lg group"
+            disabled={loading}
+          >
+            Next
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Debug info for development */}
       {process.env.NODE_ENV === "development" && (
         <div className="mb-4 p-2 bg-gray-800/50 rounded text-xs text-gray-400">
           Debug: Viewing {currentMonth.toISOString().split("T")[0]} | Timeframe:{" "}
@@ -806,6 +1091,313 @@ export function CalendarGrid({
           {calendarDays.filter((d) => d.marketData && !d.isEmpty).length}
         </div>
       )}
+
+      {/* Calendar Header */}
+      <div className={cn("grid gap-2 mb-4", getGridCols())}>
+        {getCalendarHeaders().map((header, index) => (
+          <div
+            key={header}
+            className="text-center text-sm font-bold text-gray-400 py-2"
+          >
+            {header}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar Grid - Now properly ordered with month navigation */}
+      <div className={cn("relative grid gap-2", getGridCols())}>
+        {(() => {
+          let cells = [];
+          let maxCells =
+            timeframe === "Weekly"
+              ? 6
+              : timeframe === "Monthly"
+              ? 12
+              : calendarDays.length;
+          for (let i = 0; i < maxCells; i++) {
+            const calendarDay = calendarDays[i];
+            if (!calendarDay || calendarDay.isEmpty) {
+              cells.push(
+                <div
+                  key={`empty-${i}`}
+                  className="h-fit sm:min-h-[140px] bg-gray-800/30 rounded-lg opacity-40"
+                />
+              );
+            } else {
+              const isToday =
+                calendarDay.date.toDateString() === new Date().toDateString();
+              const isSelected = selectedDate === calendarDay.marketData?.date;
+              const hasMarketData = !!calendarDay.marketData;
+
+              // Different display logic based on timeframe
+              const getDisplayText = () => {
+                switch (timeframe) {
+                  case "Weekly":
+                    return `Week ${calendarDay.day}`;
+                  case "Monthly":
+                    return calendarDay.date.toLocaleDateString("en-US", {
+                      month: "short",
+                    });
+                  default:
+                    return calendarDay.day.toString();
+                }
+              };
+
+              const getDateRange = () => {
+                if (timeframe === "Weekly") {
+                  const weekEnd = new Date(calendarDay.date);
+                  weekEnd.setDate(calendarDay.date.getDate() + 6);
+                  return `${calendarDay.date.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })} - ${weekEnd.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}`;
+                } else if (timeframe === "Monthly") {
+                  return calendarDay.date.toLocaleDateString("en-US", {
+                    month: "long",
+                    year: "numeric",
+                  });
+                }
+                return calendarDay.date.toLocaleDateString("en-US", {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                });
+              };
+
+              cells.push(
+                <Card
+                  key={`${calendarDay.date.toISOString()}-${i}`}
+                  className={cn(
+                    "relative transition-all duration-500 ease-out border-gray-800/50 backdrop-blur-sm group",
+                    timeframe === "Monthly"
+                      ? "min-h-[160px]"
+                      : timeframe === "Weekly"
+                      ? "min-h-[180px]"
+                      : "h-fit sm:min-h-[140px]",
+                    "p-0 lg:p-3 flex flex-col justify-between",
+                    hasMarketData &&
+                      "cursor-pointer transform hover:z-10 hover:scale-110 hover:shadow-2xl hover:shadow-green-500/20",
+                    isSelected &&
+                      hasMarketData &&
+                      "ring-2 ring-green-500 scale-105 shadow-lg shadow-green-500/30",
+                    isToday &&
+                      "ring-2 ring-blue-400 shadow-lg shadow-blue-400/30",
+                    !calendarDay.isCurrentMonth && "opacity-40",
+                    hasMarketData &&
+                      "focus:outline-none focus:ring-2 focus:ring-green-400"
+                  )}
+                  style={{
+                    backgroundColor: hasMarketData
+                      ? getCellBackgroundColor(calendarDay.marketData)
+                      : "rgba(75, 85, 99, 0.2)",
+                    animationDelay: `${i * 30}ms`,
+                    transform: `translateY(${isSelected ? "-4px" : "0"})`,
+                  }}
+                  onClick={() => hasMarketData && handleDateClick(calendarDay)}
+                  onMouseEnter={(e) =>
+                    hasMarketData && handleMouseEnter(calendarDay.marketData, e)
+                  }
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                  tabIndex={hasMarketData ? 0 : -1}
+                >
+                  {/* Enhanced glow effect */}
+                  {hasMarketData && (
+                    <div className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-xl blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
+                  )}
+
+                  {/* Today indicator */}
+                  {isToday && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-400 rounded-full animate-pulse shadow-lg shadow-blue-400/50" />
+                  )}
+
+                  {/* Date display */}
+                  <div className="relative flex justify-between items-start">
+                    <div className="flex flex-col">
+                      <span
+                        className={cn(
+                          "text-sm font-bold transition-colors duration-300 p-1",
+                          isToday
+                            ? "text-blue-300"
+                            : calendarDay.isCurrentMonth
+                            ? "text-white"
+                            : "text-gray-500",
+                          isSelected && "text-green-300"
+                        )}
+                      >
+                        {getDisplayText()}
+                      </span>
+                      {(timeframe === "Weekly" || timeframe === "Monthly") && (
+                        <span className="text-xs text-gray-400 mt-1">
+                          {getDateRange()}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Market data indicators */}
+                    {hasMarketData && (
+                      <div className="flex flex-col items-end space-y-1">
+                        {selectedMetrics.length === 0 && (
+                          <div
+                            className={cn(
+                              "transition-all duration-500 transform",
+                              calendarDay.marketData.trend === "up"
+                                ? "animate-bounce text-green-400"
+                                : "text-red-400"
+                            )}
+                          >
+                            {calendarDay.marketData.trend === "up" ? (
+                              <ArrowUp className="w-4 h-4 drop-shadow-lg" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 drop-shadow-lg" />
+                            )}
+                          </div>
+                        )}
+
+                        {/* Volatility intensity indicator */}
+                        <div className="flex space-x-1">
+                          {Array.from({ length: 3 }).map((_, i) => (
+                            <div
+                              key={i}
+                              className={cn(
+                                "w-1 h-1 rounded-full transition-all duration-300",
+                                calendarDay.marketData.heatmapIntensity >
+                                  i * 0.33
+                                  ? calendarDay.marketData.volatility > 5
+                                    ? "bg-red-400 shadow-lg shadow-red-400/50"
+                                    : calendarDay.marketData.volatility > 2
+                                    ? "bg-yellow-400 shadow-lg shadow-yellow-400/50"
+                                    : "bg-green-400 shadow-lg shadow-green-400/50"
+                                  : "bg-gray-600"
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Market data content - same as before */}
+                  <div className="relative space-y-2 flex-1">
+                    {hasMarketData ? (
+                      selectedMetrics.length > 0 ? (
+                        <div className="space-y-1 animate-fadeIn">
+                          {getMetricIndicators(calendarDay.marketData)}
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <div className="text-xs text-gray-300 font-mono font-bold">
+                            {calendarDay.marketData.performance > 0 ? "+" : ""}
+                            {calendarDay.marketData.performance.toFixed(1)}%
+                          </div>
+
+                          {/* Enhanced volume bar with gradient */}
+                          <div className="w-full bg-gray-800/50 rounded-full h-2 overflow-hidden shadow-inner">
+                            <div
+                              className={cn(
+                                "h-2 rounded-full transition-all duration-1000 ease-out",
+                                "bg-gradient-to-r from-blue-500 to-blue-400 shadow-lg shadow-blue-500/25"
+                              )}
+                              style={{
+                                width: `${Math.min(
+                                  (calendarDay.marketData.volume /
+                                    Math.max(...data.map((d) => d.volume))) *
+                                    100,
+                                  100
+                                )}%`,
+                              }}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-1">
+                              <BarChart3 className="w-3 h-3 text-gray-400" />
+                              <span className="text-xs text-gray-400 font-mono">
+                                {formatVolume(calendarDay.marketData.volume)}
+                              </span>
+                            </div>
+
+                            {/* Price indicator */}
+                            <span className="text-xs text-gray-300 font-mono font-bold">
+                              $
+                              {calendarDay.marketData.close.toLocaleString(
+                                undefined,
+                                { maximumFractionDigits: 0 }
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      )
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <span className="text-xs text-gray-500">No data</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Hover overlay effect */}
+                  {hasMarketData && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none" />
+                  )}
+                </Card>
+              );
+            }
+          }
+          return cells;
+        })()}
+      </div>
+
+      {/* Enhanced Legend */}
+      <div className="relative group mt-6">
+        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400/20 to-purple-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+        <div className="relative p-6 bg-gray-900/50 rounded-xl border border-gray-800/50 backdrop-blur-sm">
+          <div className="text-sm font-bold text-white mb-4 flex items-center">
+            <Sparkles className="w-4 h-4 mr-2 text-cyan-400" />
+            Calendar Legend
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-gray-400">
+            <div className="space-y-2">
+              <div className="font-bold text-white">Connection Status</div>
+              <div className="flex items-center space-x-2">
+                <div
+                  className={cn(
+                    "w-2 h-2 rounded-full",
+                    isConnected
+                      ? "bg-green-500 animate-pulse shadow-lg shadow-green-500/50"
+                      : "bg-blue-500 shadow-lg shadow-blue-500/50"
+                  )}
+                ></div>
+                <span>
+                  {isConnected
+                    ? "Live WebSocket Data"
+                    : "Reliable Polling Mode"}
+                </span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="font-bold text-white">Interactions</div>
+              <div>• Hover for detailed tooltips</div>
+              <div>• Click for comprehensive analysis</div>
+            </div>
+            <div className="space-y-2">
+              <div className="font-bold text-white">Navigation</div>
+              <div>
+                • Navigate between{" "}
+                {timeframe === "Monthly" ? "years" : "months"}
+              </div>
+              <div>• Historical data loads automatically</div>
+            </div>
+            <div className="space-y-2">
+              <div className="font-bold text-white">Data Availability</div>
+              <div>• Colored cells have market data</div>
+              <div>• Empty spaces indicate no data</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { TopNavigation } from "@/components/top-navigation";
 import { LeftSidebar } from "@/components/left-sidebar";
 import { CalendarGrid } from "@/components/calendar-grid";
+import { DetailPanel } from "@/components/detail-panel";
 import { Button } from "@/components/ui/button";
 import { Menu, X, BarChart3, Calendar, Sparkles, Zap } from "lucide-react";
 import { useRealtimeData } from "@/hooks/use-realtime-data";
@@ -21,6 +22,7 @@ export default function MarketSeasonalityExplorer() {
   ]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
+  const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [currentView, setCurrentView] = useState<"calendar" | "charts">(
     "calendar"
   );
@@ -42,6 +44,7 @@ export default function MarketSeasonalityExplorer() {
 
   const handleDateSelect = (date: string) => {
     setSelectedDate(date);
+    setRightPanelOpen(true);
   };
 
   // Cleanup WebSocket connections on unmount
@@ -55,7 +58,6 @@ export default function MarketSeasonalityExplorer() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white relative overflow-hidden">
-      {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-blue-500/5 animate-pulse"></div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-900/20 via-transparent to-transparent"></div>
       <Toaster richColors position="top-right" />
@@ -68,7 +70,7 @@ export default function MarketSeasonalityExplorer() {
         />
 
         <div className="flex h-[calc(100vh-80px)]">
-          {/* Enhanced Mobile menu button */}
+          {/*Mobile menu button */}
           <Button
             variant="ghost"
             size="icon"
@@ -87,7 +89,6 @@ export default function MarketSeasonalityExplorer() {
             )}
           </Button>
 
-          {/* Left Sidebar */}
           <div
             className={cn(
               "fixed inset-y-0 left-0 top-0 z-40 w-80 transform transition-all duration-700 ease-in-out",
@@ -109,7 +110,7 @@ export default function MarketSeasonalityExplorer() {
             />
           </div>
 
-          {/* Enhanced Mobile overlay */}
+          {/* Mobile overlay */}
           {leftSidebarOpen && (
             <div
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden transition-all duration-500"
@@ -117,13 +118,10 @@ export default function MarketSeasonalityExplorer() {
             />
           )}
 
-          {/* Enhanced Main Content */}
           <div className="flex-1 flex flex-col min-w-0 bg-gradient-to-br from-gray-900/30 to-black/30 backdrop-blur-sm">
-            {/* Enhanced View Toggle */}
             <div className="relative p-6 border-b border-gray-800/50 bg-gradient-to-r from-gray-900/30 to-gray-800/30 backdrop-blur-xl">
               <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-blue-500/5"></div>
               <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
-                {/* Button Group */}
                 <div className="flex flex-row items-center justify-start gap-2 sm:gap-3 w-full overflow-x-auto">
                   <Button
                     variant={currentView === "calendar" ? "default" : "outline"}
@@ -172,7 +170,6 @@ export default function MarketSeasonalityExplorer() {
                   </Button>
                 </div>
 
-                {/* Enhanced Status indicators - hidden on mobile */}
                 <div className="hidden sm:flex items-center space-x-4">
                   <div className="relative group">
                     <div className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
@@ -204,52 +201,27 @@ export default function MarketSeasonalityExplorer() {
               </div>
             </div>
 
-            {/* Enhanced Content Area */}
-
-            <CalendarGrid
-              timeframe={timeframe}
-              selectedMetrics={selectedMetrics}
-              onDateSelect={handleDateSelect}
-              selectedDate={selectedDate}
-              selectedInstrument={selectedInstrument}
-            />
+            <div className="flex-1 overflow-auto relative">
+                <CalendarGrid
+                  timeframe={timeframe}
+                  selectedMetrics={selectedMetrics}
+                  onDateSelect={handleDateSelect}
+                  selectedDate={selectedDate}
+                  selectedInstrument={selectedInstrument}
+                />
+            </div>
           </div>
-        </div>
 
-        {/* Right Panel */}
-        {/* <DetailPanel
+          <DetailPanel
             isOpen={rightPanelOpen}
             onClose={() => setRightPanelOpen(false)}
             selectedDate={selectedDate}
             selectedInstrument={selectedInstrument}
             timeframe={timeframe}
-          /> */}
-      </div>
-
-      {/* Enhanced Loading overlay */}
-      {loading && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-2xl blur opacity-75 animate-pulse"></div>
-            <div className="relative bg-gray-900/90 rounded-2xl p-8 border border-gray-700/50 shadow-2xl backdrop-blur-xl">
-              <div className="flex items-center space-x-6">
-                <div className="relative">
-                  <div className="w-12 h-12 border-4 border-green-400/30 border-t-green-400 rounded-full animate-spin"></div>
-                  <div className="absolute inset-2 w-8 h-8 border-4 border-blue-400/30 border-t-blue-400 rounded-full animate-spin animate-reverse"></div>
-                </div>
-                <div>
-                  <div className="text-white font-bold text-lg">
-                    Loading Market Data
-                  </div>
-                  <div className="text-gray-400 text-sm">
-                    Fetching real-time information...
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          />
         </div>
-      )}
+
+      </div>
     </div>
   );
 }
