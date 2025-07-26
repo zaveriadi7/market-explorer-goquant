@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { TrendingUp, Wifi, Zap, BellPlus, X } from "lucide-react"
-import { toast } from "sonner"
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react";
+import { TrendingUp, Wifi, Zap, BellPlus, X } from "lucide-react";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface TopNavigationProps {
-  isConnected?: boolean
-  currentPrice?: number
-  priceChange?: number
-  coinSymbol?: string
+  isConnected?: boolean;
+  currentPrice?: number;
+  priceChange?: number;
+  coinSymbol?: string;
 }
 
 type ThresholdMap = {
   [coinSymbol: string]: {
-    upper?: number
-    lower?: number
-  }
-}
+    upper?: number;
+    lower?: number;
+  };
+};
 
 export function TopNavigation({
   isConnected = false,
@@ -25,57 +25,61 @@ export function TopNavigation({
   priceChange = 0,
   coinSymbol = "BTC",
 }: TopNavigationProps) {
-  const [thresholds, setThresholds] = useState<ThresholdMap>({})
-  const [notifiedUpper, setNotifiedUpper] = useState<string[]>([])
-  const [notifiedLower, setNotifiedLower] = useState<string[]>([])
-  const [showModal, setShowModal] = useState(false)
-  const [newCoin, setNewCoin] = useState("")
-  const [newUpper, setNewUpper] = useState("")
-  const [newLower, setNewLower] = useState("")
+  const [thresholds, setThresholds] = useState<ThresholdMap>({});
+  const [notifiedUpper, setNotifiedUpper] = useState<string[]>([]);
+  const [notifiedLower, setNotifiedLower] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [newCoin, setNewCoin] = useState("");
+  const [newUpper, setNewUpper] = useState("");
+  const [newLower, setNewLower] = useState("");
 
   useEffect(() => {
-    if (!coinSymbol || currentPrice === undefined) return
+    if (!coinSymbol || currentPrice === undefined) return;
 
-    const symbol = coinSymbol.toUpperCase()
-    const threshold = thresholds[symbol]
+    const symbol = coinSymbol.toUpperCase();
+    const threshold = thresholds[symbol];
 
-    if (!threshold) return
+    if (!threshold) return;
 
     if (threshold.upper !== undefined && !notifiedUpper.includes(symbol)) {
       if (currentPrice >= threshold.upper) {
         toast.success(
-          `${symbol} crossed the UPPER threshold of $${threshold.upper}. Current: $${currentPrice.toLocaleString()}`,
+          `${symbol} crossed the UPPER threshold of $${
+            threshold.upper
+          }. Current: $${currentPrice.toLocaleString()}`,
           {
             description: "Your upper price alert just triggered.",
             duration: 6000,
           }
-        )
-        setNotifiedUpper((prev) => [...prev, symbol])
+        );
+        setNotifiedUpper((prev) => [...prev, symbol]);
       }
     }
 
     if (threshold.lower !== undefined && !notifiedLower.includes(symbol)) {
       if (currentPrice <= threshold.lower) {
         toast.warning(
-          `${symbol} dropped below the LOWER threshold of $${threshold.lower}. Current: $${currentPrice.toLocaleString()}`,
+          `${symbol} dropped below the LOWER threshold of $${
+            threshold.lower
+          }. Current: $${currentPrice.toLocaleString()}`,
           {
             description: "Your lower price alert just triggered.",
             duration: 6000,
           }
-        )
-        setNotifiedLower((prev) => [...prev, symbol])
+        );
+        setNotifiedLower((prev) => [...prev, symbol]);
       }
     }
-  }, [coinSymbol, currentPrice, thresholds, notifiedUpper, notifiedLower])
+  }, [coinSymbol, currentPrice, thresholds, notifiedUpper, notifiedLower]);
 
   const handleAddThreshold = () => {
-    const symbol = newCoin.trim().toUpperCase()
-    const upper = parseFloat(newUpper)
-    const lower = parseFloat(newLower)
+    const symbol = newCoin.trim().toUpperCase();
+    const upper = parseFloat(newUpper);
+    const lower = parseFloat(newLower);
 
     if (!symbol || (isNaN(upper) && isNaN(lower))) {
-      toast.error("Enter a valid coin and at least one numeric threshold.")
-      return
+      toast.error("Enter a valid coin and at least one numeric threshold.");
+      return;
     }
 
     setThresholds((prev) => ({
@@ -84,22 +88,26 @@ export function TopNavigation({
         upper: !isNaN(upper) ? upper : prev[symbol]?.upper,
         lower: !isNaN(lower) ? lower : prev[symbol]?.lower,
       },
-    }))
+    }));
 
-    setNotifiedUpper((prev) => prev.filter((s) => s !== symbol))
-    setNotifiedLower((prev) => prev.filter((s) => s !== symbol))
+    setNotifiedUpper((prev) => prev.filter((s) => s !== symbol));
+    setNotifiedLower((prev) => prev.filter((s) => s !== symbol));
 
-    toast(`Alert set for ${!isNaN(lower) ? `  $${lower} ≤ ` : ""}${symbol}${!isNaN(upper) ? ` ≥ $${upper}` : ""}`)
-    setShowModal(false)
-    setNewCoin("")
-    setNewUpper("")
-    setNewLower("")
-  }
+    toast(
+      `Alert set for ${!isNaN(lower) ? `  $${lower} ≤ ` : ""}${symbol}${
+        !isNaN(upper) ? ` ≥ $${upper}` : ""
+      }`
+    );
+    setShowModal(false);
+    setNewCoin("");
+    setNewUpper("");
+    setNewLower("");
+  };
 
   return (
     <>
       {/* Main Navbar */}
-      <nav className="relative bg-gradient-to-r from-black via-black to-gray-950 border-b border-gray-800/50 px-3 py-3 md:px-4 md:py-4 shadow-2xl backdrop-blur-xl">
+      <nav className="relative bg-gradient-to-r from-gray-900 via-black to-gray-900 border-b border-gray-800/50 px-3 py-3 md:px-4 md:py-4 shadow-2xl backdrop-blur-xl">
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-blue-500/5 animate-pulse pointer-events-none z-0" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
           {/* Logo & Title */}
@@ -129,9 +137,14 @@ export function TopNavigation({
                 <div className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300" />
                 <div className="hidden  relative sm:flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 md:space-x-4 px-2 py-1 md:px-4 md:py-3 bg-gray-800/50 rounded-xl border border-gray-700/50 backdrop-blur-sm hover:border-gray-600/50 transition-all duration-300 w-full sm:w-auto">
                   <div className="text-left sm:text-right">
-                    <div className="text-[8px] md:text-xs text-gray-400 font-medium">Live Price</div>
+                    <div className="text-[8px] md:text-xs text-gray-400 font-medium">
+                      Live Price
+                    </div>
                     <div className="text-xs md:text-xl font-mono font-bold text-white">
-                      ${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      $
+                      {currentPrice.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                      })}
                     </div>
                   </div>
                   <div
@@ -142,7 +155,12 @@ export function TopNavigation({
                         : "bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-300 border border-red-500/30"
                     )}
                   >
-                    <TrendingUp className={cn("w-3 h-3 md:w-4 md:h-4", priceChange < 0 && "rotate-180")} />
+                    <TrendingUp
+                      className={cn(
+                        "w-3 h-3 md:w-4 md:h-4",
+                        priceChange < 0 && "rotate-180"
+                      )}
+                    />
                     <span>
                       {priceChange >= 0 ? "+" : ""}
                       {priceChange.toFixed(2)}%
@@ -152,6 +170,7 @@ export function TopNavigation({
               </div>
             )}
 
+            {/* Connection Status */}
             <div className="relative group hidden md:flex">
               <div className="absolute -inset-1 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300" />
               <div className="relative flex items-center space-x-3 px-4 py-3 bg-gray-800/50 rounded-xl border border-gray-700/50 backdrop-blur-sm hover:border-gray-600/50 transition-all duration-300">
@@ -159,7 +178,9 @@ export function TopNavigation({
                   <>
                     <Wifi className="w-5 h-5 text-green-400" />
                     <div className="text-sm">
-                      <div className="text-green-400 font-bold">Live WebSocket</div>
+                      <div className="text-green-400 font-bold">
+                        Live WebSocket
+                      </div>
                       <div className="text-gray-400">Real-time</div>
                     </div>
                   </>
@@ -167,7 +188,9 @@ export function TopNavigation({
                   <>
                     <Zap className="w-5 h-5 text-blue-400" />
                     <div className="text-sm">
-                      <div className="text-blue-400 font-bold">Polling Mode</div>
+                      <div className="text-blue-400 font-bold">
+                        Polling Mode
+                      </div>
                       <div className="text-gray-400">Reliable</div>
                     </div>
                   </>
@@ -185,13 +208,12 @@ export function TopNavigation({
 
             {/* Set Alert Button */}
             <button
-  onClick={() => setShowModal(true)}
-  className="flex justify-center items-center gap-2 bg-gradient-to-br from-green-500/10 to-blue-500/10 hover:from-green-500/20 hover:to-blue-500/20 border border-gray-600/50 px-4 py-2 rounded-xl text-sm text-white backdrop-blur-md transition duration-300 w-full sm:w-fit text-center"
->
-  <BellPlus className="w-4 h-4" />
-  Set Alert
-</button>
-
+              onClick={() => setShowModal(true)}
+              className="flex justify-center items-center gap-2 bg-gradient-to-br from-green-500/10 to-blue-500/10 hover:from-green-500/20 hover:to-blue-500/20 border border-gray-600/50 px-4 py-2 rounded-xl text-sm text-white backdrop-blur-md transition duration-300 w-full sm:w-fit text-center"
+            >
+              <BellPlus className="w-4 h-4" />
+              Set Alert
+            </button>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
@@ -207,7 +229,9 @@ export function TopNavigation({
             >
               <X className="w-5 h-5" />
             </button>
-            <h2 className="text-xl font-bold text-white mb-4">Set Price Alert</h2>
+            <h2 className="text-xl font-bold text-white mb-4">
+              Set Price Alert
+            </h2>
             <div className="space-y-4">
               <div>
                 <label className="text-gray-400 text-sm">Coin Symbol</label>
@@ -219,7 +243,9 @@ export function TopNavigation({
                 />
               </div>
               <div>
-                <label className="text-gray-400 text-sm">Upper Threshold (≥)</label>
+                <label className="text-gray-400 text-sm">
+                  Upper Threshold (≥)
+                </label>
                 <input
                   value={newUpper}
                   onChange={(e) => setNewUpper(e.target.value)}
@@ -228,7 +254,9 @@ export function TopNavigation({
                 />
               </div>
               <div>
-                <label className="text-gray-400 text-sm">Lower Threshold (≤)</label>
+                <label className="text-gray-400 text-sm">
+                  Lower Threshold (≤)
+                </label>
                 <input
                   value={newLower}
                   onChange={(e) => setNewLower(e.target.value)}
@@ -247,5 +275,5 @@ export function TopNavigation({
         </div>
       )}
     </>
-  )
+  );
 }
