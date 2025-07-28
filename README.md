@@ -280,4 +280,6 @@ I would like to thank the team at **GoQuant** for this opportunity. It was a val
 I appreciate your time and consideration, and I look forward to the possibility of contributing further to your team.
 
 > Built  by [Aditya Zaveri](https://adityazaveri.vercel.app/)
-       
+
+Google Docs link for documentation:- https://docs.google.com/document/d/1yeUlwarxtB-DJyS56WVA1zKAorlHnA7lTRYMpcfKyoU/edit?usp=sharing 
+Video Submission:-https://www.loom.com/share/99443d183a7d44df8433784c477941b6
