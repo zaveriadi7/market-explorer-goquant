@@ -56,7 +56,19 @@ export default function MarketSeasonalityExplorer() {
   }, []);
 
   const currentPrice = ticker ? Number.parseFloat(ticker.lastPrice) : undefined;
-
+  function mapTimeframe(view: string): "1d" | "1w" | "1M" {
+    switch (view) {
+      case "Daily":
+        return "1d";
+      case "Weekly":
+        return "1w";
+      case "Monthly":
+        return "1M";
+      default:
+        return "1d"; // Fallback
+    }
+  }
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white relative overflow-hidden">
       {/* Animated background */}
@@ -247,7 +259,7 @@ export default function MarketSeasonalityExplorer() {
             onClose={() => setRightPanelOpen(false)}
             selectedDate={selectedDate}
             selectedInstrument={selectedInstrument}
-            timeframe={"1w"}
+            timeframe={mapTimeframe(timeframe)}
           />
         </div>
 
