@@ -1,0 +1,4005 @@
+**************************************App-Level Test Cases (Testing Report)**************************************
+
+🔹 Test 1: Smoke Test – Initial Load
+	Test Detail: Verify that the app loads the current month’s calendar view with today highlighted.
+	Steps:
+	1.Visit the home page /.
+	2.Check that the calendar is rendered.
+	3.Verify that today’s date cell is highlighted.
+
+	Expected Result:
+	Calendar grid shows correctly.
+	Today is visually marked.
+
+	Test Result: ✅ Pass
+	Home Page loads, Calendar view for different views is rendered correctly, and today's day is highlighted accurately.
+	Screenshot: public/smoketest.png
+
+🔹 Test 2: Switching Views (Day / Week / Month)
+	Test Detail: Ensure switching between timeframes renders correct data.
+	Steps:
+	1.Click "Week View" tab.
+	2.Click "Month View" tab.
+	3.Click "Day View" tab.
+
+	Expected Result:
+	Corresponding view updates.
+	Metrics update based on selected timeframe.
+
+	Test Result: ✅ Pass
+	Calendar view for different views is rendered correctly, and metrics update based on selected timeframe.
+	Screenshot: public/switchviews.png
+
+🔹 Test 3: Hover Tooltip
+	Test Detail: Hovering over a cell shows a tooltip with volatility, volume, and performance.
+
+	Steps:
+	1.Hover over a calendar date cell.
+
+	Expected Result:
+	Tooltip appears with values (e.g., "Volatility: High", "Volume: 5.2M").
+
+	Test Result: ✅ Pass
+	Tooltip appears with values (e.g., "Volatility: High", "Volume: 5.2M").
+	Screenshot: public/hovertooltip.png
+
+🔹 Test 4: Click-to-Open Detail Panel
+	Test Detail: Clicking a date opens the detailed metrics side panel.
+
+	Steps:
+	1.Click a date cell.
+	2.Wait for the right-side panel to appear.
+
+	Expected Result:
+	Panel shows:
+	OHLC price
+	Volume/liquidity
+	Technical indicators (RSI, MA)
+	Volatility measures
+
+	Test Result: ✅ Pass
+	Panel opens with correct data.
+	Screenshot: public/detailpanel.png
+
+🔹 Test 5: Date Navigation
+	Test Detail: Navigating to next/previous months works.
+
+	Steps:
+	1.Click "Next Month" button.
+	2.Click "Previous Month" button.
+
+	Expected Result:
+	Calendar updates.
+	New dates are displayed with correct data overlays.
+
+	Test Result: ✅ Pass
+	Calendar updates with correct data overlays(june view).
+	Screenshot: public/datenavigation.png
+
+🔹 Test 6: Filtering by Instrument
+	Test Detail: Selecting a different coin/instrument updates calendar.
+
+	Steps:
+	1.Select "ETH/USDT" from dropdown.
+	2.Observe updated volatility/liquidity heatmap.
+
+	Expected Result:
+	Calendar updates with ETH data.
+	Metrics reflect selection.
+
+	Test Result: ✅ Pass
+	Calendar updates with ETH data.
+	Screenshot: public/filteringbyinstrument.png
+
+🔹 Test 7: Exporting Data
+	Test Detail: Export as PDF/CSV/JSON works properly.
+
+	Steps:
+	1.Click a date.
+	2.Click "Export as CSV".
+	3.Downloaded file contains correct values.
+
+	Expected Result:
+	File contains headers: Date, Open, High, Low, Close, Volume, Volatility.
+	Values match current view.
+
+	Test Result: ✅ Pass
+	CSV,JSON and PDF  file is downloaded with correct values.
+	Screenshot: public/exportingdata.png
+	JSON value:-
+	   {
+		"date": "2025-07-09",
+		"instrument": "ETH/USDT",
+		"metrics": {
+			"ohlc": {
+			"open": 2615.25,
+			"high": 2795.74,
+			"low": 2589.78,
+			"close": 2768.74
+			},
+			"volume": 686119.3772,
+			"quoteVolume": 1844561572.906599,
+			"volatility": 7.875346525188781,
+			"rsi": 75.97813848752108,
+			"ma20": 3428.0630000000006,
+			"ma50": 2880.3538,
+			"change": 153.48999999999978,
+			"changePercent": 5.869037376923804,
+			"numberOfTrades": 2997546
+		},
+		"exportedAt": "2025-07-28T07:10:20.464Z"
+	   }
+	CSV values:
+			Metric,Value
+			Date,2025-07-09
+			Instrument,ETH/USDT
+			Open,2615.25
+			High,2795.74
+			Low,2589.78
+			Close,2768.74
+			Volume,686119.3772
+			Quote Volume,1844561572.906599
+			Volatility %,7.875346525188781
+			RSI,75.97813848752108
+			MA(20),3428.0630000000006
+			MA(50),2880.3538
+			Change,153.48999999999978
+			Change %,5.869037376923804
+			Number of Trades,2997546
+
+🔹 Test 8: Responsive Design
+	Test Detail: App behaves correctly on mobile.
+
+	Steps:
+	1.Resize window to 375x667 (iPhone size).
+	2.Tap calendar cells, filters, etc.
+
+	Expected Result:
+	All components visible.
+	Touch interactions work.
+	Layout adapts.
+
+	Test Result: ✅ Pass
+	App behaves correctly on mobile.
+	Screenshot: public/mobileview.png
+
+🔹 Test 9: Error Handling
+	Test Detail: Handles failed API fetch gracefully.
+
+	Steps:
+	1.Simulate API failure (mock server down).
+	2.Reload the app.
+
+	Expected Result:
+	App displays error message/toast like “Failed to load data.”
+	Does not crash.
+
+	Test Result: ✅ Pass
+	App shows message that it failed to fetch data.
+	Screenshot: public/networkerror.png
+
+🔹 Test 10: Alerts System
+	Test Detail: Set a threshold alert and trigger it by a simulated data spike.
+
+	Steps:
+	1.Open the alert configuration panel.
+	2.Set a threshold (e.g., Volatility > 0.9).
+
+	Expected Result:
+	Notification or toast appears when threshold is crossed.
+	The alert displays correct symbol, time, and value.
+
+	Test Result: ✅ Pass
+	Alert is triggered when threshold is crossed.
+	Screenshot: public/alerttoast.png
+
+🔹 Test 11: Date Compare Selection and Data
+	Test Detail: Select two calendar cells and validate the summary metrics.
+
+	Steps:
+	1.Select any two custom dates (e.g., July 10 to July 20).
+	2.Observe the summary panel.
+
+	Expected Result:
+	Aggregated data (e.g., total volume, avg. volatility, net performance) appears.
+	Selection UI remains persistent.
+
+	Test Result: ✅ Pass
+	Data is aggregated and displayed correctly.
+	Screenshot: public/dateselection.png, public/comparison.png
+
+🔹 Test 12: Volatility Heatmap
+	Test Detail: Volatility cells render with correct color gradients.
+
+	Steps:
+	1.Select a volatile coin (e.g., Bitcoin).
+	2.Load calendar view.
+	3.Observe color-coded cells (green/yellow/orange/red).
+
+	Expected Result:
+	Low → green, medium → yellow/orange, high → red.
+	Tooltip on hover shows precise volatility score.
+
+	Test Result: ✅ Pass
+	Volatility cells are color-coded correctly.
+	Screenshot: public/volatilityheatmap.png
+
+🔹 Test 13: Chart Rendering
+	Test Detail: Line, bar, and candlestick charts render correctly across views.
+
+	Steps:
+	1.Select a date or range.
+	2.View chart in detail panel.
+
+	Expected Result:
+	Candlestick shows OHLC properly.
+	Volume bars align with candle data.
+
+	Test Result: ✅ Pass
+	Chart is rendered correctly.
+	Screenshot: public/charts.png
+
+🔹 Test 14: Leap Year
+
+	Test Detail: Ensure that the calendar correctly renders February 29th in a leap year and that all visualizations and calculations (volatility, volume, performance) work for that date.
+
+	Steps:
+	1.Navigate to February 2024 (a leap year).
+	2.Verify that February 29 appears in the calendar grid.
+	3.Select February 29 to open the detail panel.
+
+	Expected Result:
+	Calendar displays Feb 29 accurately.
+	Detail panel loads all metrics for that date.
+	Volatility, performance, and liquidity data load correctly for the leap day.
+
+	Test Result: ✅ Pass
+
+	Feb 29 is visible and selectable.
+	Metrics load with correct values.
+	No visual or functional glitches observed.
+
+	Screenshot: public/leapyear.png
+
+🔹 Test 15: Future Dates with No Data
+	Test Detail: Ensure the app handles calendar cells representing future dates where no market data is available (e.g., upcoming months).
+
+	Steps:
+	1.Navigate to a future month (e.g., August 2025 or later).
+	2.Click on a future date (e.g., August 15, 2025).
+	3.Observe behavior in Calendar Grid.
+
+	Expected Result:
+	Calendar still renders future dates normally.
+	Calendar Cell shows a fallback message like: "No data”
+	No crashes or API errors occur.
+
+	Test Result: ✅ Pass
+	Future dates are displayed with grayed-out visuals or empty states.
+	Calendar Cell  clearly indicate data unavailability.
+
+	Screenshot: public/futuredate.png
+
+************************************Real Data Formats from BINANCE API*******************************************
+Note: All data presented here is real data from binance api.
+
+Websocket Test:
+	Test Platform :- https://websocketking.com/
+	wsUrl:wss://stream.binance.com:9443/ws/${streamName}
+	streamname example:-btcusdt@ticker
+	Purpose:-
+	Data Example(Real Sample wss://stream.binance.com:9443/ws/btcusdt@ticker):-
+	{"e":"24hrTicker","E":1753687881018,"s":"BTCUSDT","p":"770.49000000","P":"0.652","w":"119044.58192330","x":"118121.89000000","c":"118892.39000000","Q":"0.00068000","b":"118892.38000000","B":"7.68202000","a":"118892.39000000","A":"0.77145000","o":"118121.90000000","h":"119800.00000000","l":"117859.98000000","v":"11421.10672000","q":"1359620874.58379990","O":1753601481011,"C":1753687881011,"F":5114449203,"L":5115833345,"n":1384143}
+
+Kline Data(Candlestick Data):-
+	apiurl:-https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=2
+	Params(example):-
+		symbol:BTCUSDT
+		interval:1d
+		limit:2
+	Purpose:-
+	Data Example:-
+	[
+		[
+			1753574400000,
+			"117919.99000000",
+			"119766.65000000",
+			"117825.50000000",
+			"119415.55000000",
+			"9328.30919000",
+			1753660799999,
+			"1107883542.16079820",
+			1095080,
+			"5238.30358000",
+			"622261561.25072770",
+			"0"
+		],
+		[
+			1753660800000,
+			"119415.56000000",
+			"119800.00000000",
+			"118774.31000000",
+			"118809.96000000",
+			"3923.02832000",
+			1753747199999,
+			"468098512.16766780",
+			501250,
+			"1991.87998000",
+			"237697617.74228470",
+			"0"
+		]
+	]
+
+Ticker24hr:-
+	apiurl:-https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT
+	Params(example):-
+		symbol:BTCUSDT
+	Purpose:-
+	Data Example:-
+	{
+		"symbol": "BTCUSDT",
+		"priceChange": "705.66000000",
+		"priceChangePercent": "0.597",
+		"weightedAvgPrice": "119043.25503919",
+		"prevClosePrice": "118175.56000000",
+		"lastPrice": "118881.22000000",
+		"lastQty": "0.00030000",
+		"bidPrice": "118881.22000000",
+		"bidQty": "2.79439000",
+		"askPrice": "118881.23000000",
+		"askQty": "0.89514000",
+		"openPrice": "118175.56000000",
+		"highPrice": "119800.00000000",
+		"lowPrice": "117859.98000000",
+		"volume": "11530.76454000",
+		"quoteVolume": "1372659743.93210420",
+		"openTime": 1753601798957,
+		"closeTime": 1753688198957,
+		"firstId": 5114451457,
+		"lastId": 5115844193,
+		"count": 1392737
+	}
+
+avgPrice:-
+	apiurl:-https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT
+	Params(example):-
+		symbol:BTCUSDT
+	Purpose:-
+	Data Example:-
+	{
+		"mins": 5,
+		"price": "118843.22056611",
+		"closeTime": 1753688284412
+	}
+
+
+
+
+What calendargrid component receives in Monthly View:-
+[
+  {
+    "date": "2024-01-01",
+    "day": 1,
+    "open": 42283.58,
+    "high": 48969.48,
+    "low": 38555,
+    "close": 42580,
+    "volume": 1403408.84978,
+    "quoteVolume": 60830257410.58648,
+    "performance": 0.7010286262421447,
+    "volatility": 24.63008099125004,
+    "heatmapIntensity": 0.07010286262421447,
+    "trend": "up",
+    "numberOfTrades": 52549865
+  },
+  {
+    "date": "2024-02-01",
+    "day": 1,
+    "open": 42580,
+    "high": 64000,
+    "low": 41884.28,
+    "close": 61130.98,
+    "volume": 1206112.69545,
+    "quoteVolume": 61810386480.104126,
+    "performance": 43.56735556599343,
+    "volatility": 51.939220291216536,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 48050724
+  },
+  {
+    "date": "2024-03-01",
+    "day": 1,
+    "open": 61130.99,
+    "high": 73777,
+    "low": 59005,
+    "close": 71280.01,
+    "volume": 1706807.381342,
+    "quoteVolume": 114890900621.64632,
+    "performance": 16.60208676483073,
+    "volatility": 24.164503143168467,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 78610868
+  },
+  {
+    "date": "2024-04-01",
+    "day": 1,
+    "open": 71280,
+    "high": 72797.99,
+    "low": 59191.6,
+    "close": 60672,
+    "volume": 1201500.95852,
+    "quoteVolume": 78870257314.33829,
+    "performance": -14.882154882154882,
+    "volatility": 19.08865039281707,
+    "heatmapIntensity": 1,
+    "trend": "down",
+    "numberOfTrades": 56536352
+  },
+  {
+    "date": "2024-05-01",
+    "day": 1,
+    "open": 60672.01,
+    "high": 71979,
+    "low": 56552.82,
+    "close": 67540.01,
+    "volume": 945031.04072,
+    "quoteVolume": 61102526732.0654,
+    "performance": 11.319882100494103,
+    "volatility": 25.425529828334348,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 40467569
+  },
+  {
+    "date": "2024-06-01",
+    "day": 1,
+    "open": 67540.01,
+    "high": 71997.02,
+    "low": 58402,
+    "close": 62772.01,
+    "volume": 696818.18818,
+    "quoteVolume": 46007819231.09386,
+    "performance": -7.059519239040671,
+    "volatility": 20.128839187320235,
+    "heatmapIntensity": 0.705951923904067,
+    "trend": "down",
+    "numberOfTrades": 35341653
+  },
+  {
+    "date": "2024-07-01",
+    "day": 1,
+    "open": 62772.01,
+    "high": 70079.99,
+    "low": 53485.93,
+    "close": 64628,
+    "volume": 908004.33426,
+    "quoteVolume": 56352575125.89188,
+    "performance": 2.9567158993315616,
+    "volatility": 26.435444714929478,
+    "heatmapIntensity": 0.2956715899331562,
+    "trend": "up",
+    "numberOfTrades": 54947978
+  },
+  {
+    "date": "2024-08-01",
+    "day": 1,
+    "open": 64628.01,
+    "high": 65659.78,
+    "low": 49000,
+    "close": 58973.99,
+    "volume": 1010291.47396,
+    "quoteVolume": 59410017127.33833,
+    "performance": -8.748559641554806,
+    "volatility": 25.777956028663112,
+    "heatmapIntensity": 0.8748559641554806,
+    "trend": "down",
+    "numberOfTrades": 68421354
+  },
+  {
+    "date": "2024-09-01",
+    "day": 1,
+    "open": 58974,
+    "high": 66498,
+    "low": 52550,
+    "close": 63327.59,
+    "volume": 734117.07575,
+    "quoteVolume": 43783927982.82593,
+    "performance": 7.3822192830738915,
+    "volatility": 23.65110048495947,
+    "heatmapIntensity": 0.7382219283073892,
+    "trend": "up",
+    "numberOfTrades": 91935065
+  },
+  {
+    "date": "2024-10-01",
+    "day": 1,
+    "open": 63327.6,
+    "high": 73620.12,
+    "low": 58946,
+    "close": 70292.01,
+    "volume": 756010.86343,
+    "quoteVolume": 49836497872.668884,
+    "performance": 10.997432399143497,
+    "volatility": 23.171760812031398,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 116212071
+  },
+  {
+    "date": "2024-11-01",
+    "day": 1,
+    "open": 70292.01,
+    "high": 99588.01,
+    "low": 66835,
+    "close": 96407.99,
+    "volume": 1343559.242196,
+    "quoteVolume": 116340254505.95044,
+    "performance": 37.15355415217179,
+    "volatility": 46.59563725663841,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 192124856
+  },
+  {
+    "date": "2024-12-01",
+    "day": 1,
+    "open": 96407.99,
+    "high": 108353,
+    "low": 90500,
+    "close": 93576,
+    "volume": 1019450.065773,
+    "quoteVolume": 100509976051.22847,
+    "performance": -2.9375054909868004,
+    "volatility": 18.518174686558655,
+    "heatmapIntensity": 0.29375054909868004,
+    "trend": "down",
+    "numberOfTrades": 179962652
+  },
+  {
+    "date": "2025-01-01",
+    "day": 1,
+    "open": 93576,
+    "high": 109588,
+    "low": 89256.69,
+    "close": 102429.56,
+    "volume": 864534.738322,
+    "quoteVolume": 86899655102.03972,
+    "performance": 9.461357613063177,
+    "volatility": 21.72705608275626,
+    "heatmapIntensity": 0.9461357613063177,
+    "trend": "up",
+    "numberOfTrades": 135946515
+  },
+  {
+    "date": "2025-02-01",
+    "day": 1,
+    "open": 102429.56,
+    "high": 102783.71,
+    "low": 78258.52,
+    "close": 84349.94,
+    "volume": 810850.1813,
+    "quoteVolume": 75571962403.11739,
+    "performance": -17.650783621446774,
+    "volatility": 23.943469053269393,
+    "heatmapIntensity": 1,
+    "trend": "down",
+    "numberOfTrades": 128881324
+  },
+  {
+    "date": "2025-03-01",
+    "day": 1,
+    "open": 84349.95,
+    "high": 95000,
+    "low": 76606,
+    "close": 82550.01,
+    "volume": 845293.53101,
+    "quoteVolume": 72249165199.97194,
+    "performance": -2.133895752161089,
+    "volatility": 21.806770484155592,
+    "heatmapIntensity": 0.21338957521610888,
+    "trend": "down",
+    "numberOfTrades": 136245963
+  },
+  {
+    "date": "2025-04-01",
+    "day": 1,
+    "open": 82550,
+    "high": 95758.04,
+    "low": 74508,
+    "close": 94172,
+    "volume": 793597.00179,
+    "quoteVolume": 67340958092.03971,
+    "performance": 14.078740157480315,
+    "volatility": 25.742023016353716,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 104290701
+  },
+  {
+    "date": "2025-05-01",
+    "day": 1,
+    "open": 94172,
+    "high": 111980,
+    "low": 93377,
+    "close": 104591.88,
+    "volume": 642216.546125,
+    "quoteVolume": 66814790205.168755,
+    "performance": 11.064732616913737,
+    "volatility": 19.754279403644396,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 108937329
+  },
+  {
+    "date": "2025-06-01",
+    "day": 1,
+    "open": 104591.88,
+    "high": 110530.17,
+    "low": 98200,
+    "close": 107146.5,
+    "volume": 427546.46336,
+    "quoteVolume": 45011296111.19446,
+    "performance": 2.4424649408730343,
+    "volatility": 11.788840586860088,
+    "heatmapIntensity": 0.24424649408730342,
+    "trend": "up",
+    "numberOfTrades": 81239595
+  },
+  {
+    "date": "2025-07-01",
+    "day": 1,
+    "open": 107146.51,
+    "high": 123218,
+    "low": 105100.19,
+    "close": 118929.02,
+    "volume": 429048.189617,
+    "quoteVolume": 49636648733.11144,
+    "performance": 10.99663442141047,
+    "volatility": 16.909379502888147,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 60625951
+  }
+]
+
+
+What calendargrid component receives in Weekly View:-
+[
+  {
+    "date": "2025-05-05",
+    "day": 5,
+    "open": 94277.61,
+    "high": 104984.57,
+    "low": 93377,
+    "close": 104118,
+    "volume": 145910.00118,
+    "quoteVolume": 14583509603.593487,
+    "performance": 10.437674438289218,
+    "volatility": 12.31211737336151,
+    "heatmapIntensity": 1,
+    "trend": "up",
+    "numberOfTrades": 22711496
+  },
+  {
+    "date": "2025-05-12",
+    "day": 12,
+    "open": 104118,
+    "high": 106660,
+    "low": 100718.37,
+    "close": 106454.26,
+    "volume": 135512.85987,
+    "quoteVolume": 14045950516.802755,
+    "performance": 2.2438579304250896,
+    "volatility": 5.706630937974226,
+    "heatmapIntensity": 0.22438579304250897,
+    "trend": "up",
+    "numberOfTrades": 25165975
+  },
+  {
+    "date": "2025-05-19",
+    "day": 19,
+    "open": 106454.27,
+    "high": 111980,
+    "low": 102000,
+    "close": 109004.19,
+    "volume": 197357.632795,
+    "quoteVolume": 21277599019.749615,
+    "performance": 2.395319605310335,
+    "volatility": 9.37491751152866,
+    "heatmapIntensity": 0.23953196053103348,
+    "trend": "up",
+    "numberOfTrades": 32596995
+  },
+  {
+    "date": "2025-05-26",
+    "day": 26,
+    "open": 109004.2,
+    "high": 110718,
+    "low": 103068.55,
+    "close": 105642.93,
+    "volume": 116099.819,
+    "quoteVolume": 12434225737.29786,
+    "performance": -3.0836151267565874,
+    "volatility": 7.0175736347773725,
+    "heatmapIntensity": 0.30836151267565876,
+    "trend": "down",
+    "numberOfTrades": 21922278
+  },
+  {
+    "date": "2025-06-02",
+    "day": 2,
+    "open": 105642.93,
+    "high": 106794.67,
+    "low": 100372.26,
+    "close": 105734,
+    "volume": 95301.97979,
+    "quoteVolume": 9961179243.803814,
+    "performance": 0.0862054848346283,
+    "volatility": 6.079356185974778,
+    "heatmapIntensity": 0.00862054848346283,
+    "trend": "up",
+    "numberOfTrades": 17113088
+  },
+  {
+    "date": "2025-06-09",
+    "day": 9,
+    "open": 105734.01,
+    "high": 110530.17,
+    "low": 102664.31,
+    "close": 105594.01,
+    "volume": 110085.74896,
+    "quoteVolume": 11781363878.996988,
+    "performance": -0.132407727655463,
+    "volatility": 7.439290347542858,
+    "heatmapIntensity": 0.0132407727655463,
+    "trend": "down",
+    "numberOfTrades": 20566821
+  },
+  {
+    "date": "2025-06-16",
+    "day": 16,
+    "open": 105594.02,
+    "high": 108952.38,
+    "low": 98200,
+    "close": 100963.87,
+    "volume": 110755.93156,
+    "quoteVolume": 11499746029.506609,
+    "performance": -4.384860051733998,
+    "volatility": 10.182754667357113,
+    "heatmapIntensity": 0.4384860051733998,
+    "trend": "down",
+    "numberOfTrades": 22161514
+  },
+  {
+    "date": "2025-06-23",
+    "day": 23,
+    "open": 100963.87,
+    "high": 108528.5,
+    "low": 99613.33,
+    "close": 108356.93,
+    "volume": 91938.97808,
+    "quoteVolume": 9702411319.591393,
+    "performance": 7.322480804271862,
+    "volatility": 8.83005970353553,
+    "heatmapIntensity": 0.7322480804271863,
+    "trend": "up",
+    "numberOfTrades": 17685328
+  },
+  {
+    "date": "2025-06-30",
+    "day": 30,
+    "open": 108356.93,
+    "high": 110529.18,
+    "low": 105100.19,
+    "close": 109203.84,
+    "volume": 72977.1763,
+    "quoteVolume": 7893875266.129643,
+    "performance": 0.7815928339793344,
+    "volatility": 5.010284067664146,
+    "heatmapIntensity": 0.07815928339793345,
+    "trend": "up",
+    "numberOfTrades": 12742249
+  },
+  {
+    "date": "2025-07-07",
+    "day": 7,
+    "open": 109203.85,
+    "high": 119488,
+    "low": 107429.57,
+    "close": 119086.64,
+    "volume": 104658.05244,
+    "quoteVolume": 11914188167.579575,
+    "performance": 9.04985492727591,
+    "volatility": 11.042129009187857,
+    "heatmapIntensity": 0.9049854927275909,
+    "trend": "up",
+    "numberOfTrades": 16041013
+  },
+  {
+    "date": "2025-07-14",
+    "day": 14,
+    "open": 119086.65,
+    "high": 123218,
+    "low": 115736.92,
+    "close": 117265.12,
+    "volume": 131579.689337,
+    "quoteVolume": 15627517466.260357,
+    "performance": -1.5295837106846142,
+    "volatility": 6.282047567884395,
+    "heatmapIntensity": 0.1529583710684614,
+    "trend": "down",
+    "numberOfTrades": 18213670
+  },
+  {
+    "date": "2025-07-21",
+    "day": 21,
+    "open": 117265.11,
+    "high": 120247.8,
+    "low": 114723.16,
+    "close": 119415.55,
+    "volume": 123158.43225,
+    "quoteVolume": 14485636079.234346,
+    "performance": 1.8338276406341174,
+    "volatility": 4.711239344763331,
+    "heatmapIntensity": 0.18338276406341175,
+    "trend": "up",
+    "numberOfTrades": 14638922
+  },
+  {
+    "date": "2025-07-28",
+    "day": 28,
+    "open": 119415.56,
+    "high": 119800,
+    "low": 118475.47,
+    "close": 118970.71,
+    "volume": 6426.52486,
+    "quoteVolume": 765548725.9878644,
+    "performance": -0.37252264277786856,
+    "volatility": 1.1091770620177126,
+    "heatmapIntensity": 0.037252264277786856,
+    "trend": "down",
+    "numberOfTrades": 763004
+  }
+]
+
+
+What calendargrid component receives in Daily View:-
+[
+  {
+    "date": "2025-01-01",
+    "day": 1,
+    "open": 93576,
+    "high": 95151.15,
+    "low": 92888,
+    "close": 94591.79,
+    "volume": 10373.32613,
+    "quoteVolume": 975444194.1379983,
+    "performance": 1.0855240659998222,
+    "volatility": 2.4185154313071666,
+    "heatmapIntensity": 0.10855240659998222,
+    "trend": "up",
+    "numberOfTrades": 1516556
+  },
+  {
+    "date": "2025-01-02",
+    "day": 2,
+    "open": 94591.78,
+    "high": 97839.5,
+    "low": 94392,
+    "close": 96984.79,
+    "volume": 21970.48948,
+    "quoteVolume": 2118411852.6812794,
+    "performance": 2.5298287018174253,
+    "volatility": 3.6446084427209215,
+    "heatmapIntensity": 0.25298287018174254,
+    "trend": "up",
+    "numberOfTrades": 3569079
+  },
+  {
+    "date": "2025-01-03",
+    "day": 3,
+    "open": 96984.79,
+    "high": 98976.91,
+    "low": 96100.01,
+    "close": 98174.18,
+    "volume": 15253.82936,
+    "quoteVolume": 1486610768.5907917,
+    "performance": 1.2263675572221164,
+    "volatility": 2.966341423227301,
+    "heatmapIntensity": 0.12263675572221164,
+    "trend": "up",
+    "numberOfTrades": 2851164
+  },
+  {
+    "date": "2025-01-04",
+    "day": 4,
+    "open": 98174.17,
+    "high": 98778.43,
+    "low": 97514.79,
+    "close": 98220.5,
+    "volume": 8990.05651,
+    "quoteVolume": 881223751.6353602,
+    "performance": 0.04719163910425904,
+    "volatility": 1.2871410066415632,
+    "heatmapIntensity": 0.004719163910425904,
+    "trend": "up",
+    "numberOfTrades": 1559982
+  },
+  {
+    "date": "2025-01-05",
+    "day": 5,
+    "open": 98220.51,
+    "high": 98836.85,
+    "low": 97276.79,
+    "close": 98363.61,
+    "volume": 8095.63723,
+    "quoteVolume": 793931715.9546324,
+    "performance": 0.14569258498047488,
+    "volatility": 1.5883240679568984,
+    "heatmapIntensity": 0.014569258498047489,
+    "trend": "up",
+    "numberOfTrades": 1685799
+  },
+  {
+    "date": "2025-01-06",
+    "day": 6,
+    "open": 98363.61,
+    "high": 102480,
+    "low": 97920,
+    "close": 102235.6,
+    "volume": 25263.43375,
+    "quoteVolume": 2540561688.7771435,
+    "performance": 3.9364049367443967,
+    "volatility": 4.635860761922015,
+    "heatmapIntensity": 0.39364049367443965,
+    "trend": "up",
+    "numberOfTrades": 3853702
+  },
+  {
+    "date": "2025-01-07",
+    "day": 7,
+    "open": 102235.6,
+    "high": 102724.38,
+    "low": 96181.81,
+    "close": 96954.61,
+    "volume": 32059.87537,
+    "quoteVolume": 3170421659.717236,
+    "performance": -5.165509861535517,
+    "volatility": 6.399502717253096,
+    "heatmapIntensity": 0.5165509861535517,
+    "trend": "down",
+    "numberOfTrades": 4480562
+  },
+  {
+    "date": "2025-01-08",
+    "day": 8,
+    "open": 96954.6,
+    "high": 97268.65,
+    "low": 92500.9,
+    "close": 95060.61,
+    "volume": 33704.67894,
+    "quoteVolume": 3205849081.112962,
+    "performance": -1.9534813201230319,
+    "volatility": 4.917507781992809,
+    "heatmapIntensity": 0.1953481320123032,
+    "trend": "down",
+    "numberOfTrades": 5171208
+  },
+  {
+    "date": "2025-01-09",
+    "day": 9,
+    "open": 95060.61,
+    "high": 95382.32,
+    "low": 91203.67,
+    "close": 92552.49,
+    "volume": 34544.83685,
+    "quoteVolume": 3217669887.245398,
+    "performance": -2.638442989162383,
+    "volatility": 4.395774443273622,
+    "heatmapIntensity": 0.2638442989162383,
+    "trend": "down",
+    "numberOfTrades": 6027161
+  },
+  {
+    "date": "2025-01-10",
+    "day": 10,
+    "open": 92552.49,
+    "high": 95836,
+    "low": 92206.02,
+    "close": 94726.11,
+    "volume": 31482.86424,
+    "quoteVolume": 2962085343.283704,
+    "performance": 2.3485267657304467,
+    "volatility": 3.922077082961242,
+    "heatmapIntensity": 0.23485267657304468,
+    "trend": "up",
+    "numberOfTrades": 5531444
+  },
+  {
+    "date": "2025-01-11",
+    "day": 11,
+    "open": 94726.1,
+    "high": 95050.94,
+    "low": 93831.73,
+    "close": 94599.99,
+    "volume": 7047.9043,
+    "quoteVolume": 665685994.93301,
+    "performance": -0.13313120671071707,
+    "volatility": 1.2870898305746847,
+    "heatmapIntensity": 0.013313120671071706,
+    "trend": "down",
+    "numberOfTrades": 1496191
+  },
+  {
+    "date": "2025-01-12",
+    "day": 12,
+    "open": 94599.99,
+    "high": 95450.1,
+    "low": 93711.19,
+    "close": 94545.06,
+    "volume": 8606.86622,
+    "quoteVolume": 813278829.6583949,
+    "performance": -0.05806554525006563,
+    "volatility": 1.838171441667175,
+    "heatmapIntensity": 0.005806554525006563,
+    "trend": "down",
+    "numberOfTrades": 1658863
+  },
+  {
+    "date": "2025-01-13",
+    "day": 13,
+    "open": 94545.07,
+    "high": 95940,
+    "low": 89256.69,
+    "close": 94536.1,
+    "volume": 42619.56423,
+    "quoteVolume": 3930666134.3474574,
+    "performance": -0.009487538588739913,
+    "volatility": 7.068914328372698,
+    "heatmapIntensity": 0.0009487538588739913,
+    "trend": "down",
+    "numberOfTrades": 5740963
+  },
+  {
+    "date": "2025-01-14",
+    "day": 14,
+    "open": 94536.11,
+    "high": 97371,
+    "low": 94346.22,
+    "close": 96560.86,
+    "volume": 27846.61753,
+    "quoteVolume": 2676048470.3569503,
+    "performance": 2.1417741855466654,
+    "volatility": 3.1996027761243813,
+    "heatmapIntensity": 0.21417741855466654,
+    "trend": "up",
+    "numberOfTrades": 4532923
+  },
+  {
+    "date": "2025-01-15",
+    "day": 15,
+    "open": 96560.85,
+    "high": 100681.94,
+    "low": 96500,
+    "close": 100497.35,
+    "volume": 30509.99179,
+    "quoteVolume": 3006242382.8867946,
+    "performance": 4.076703964391366,
+    "volatility": 4.330885653968458,
+    "heatmapIntensity": 0.4076703964391366,
+    "trend": "up",
+    "numberOfTrades": 3487945
+  },
+  {
+    "date": "2025-01-16",
+    "day": 16,
+    "open": 100497.35,
+    "high": 100866.66,
+    "low": 97335.13,
+    "close": 99987.3,
+    "volume": 27832.85317,
+    "quoteVolume": 2765162040.639799,
+    "performance": -0.5075258203325788,
+    "volatility": 3.5140528581101877,
+    "heatmapIntensity": 0.05075258203325787,
+    "trend": "down",
+    "numberOfTrades": 3762755
+  },
+  {
+    "date": "2025-01-17",
+    "day": 17,
+    "open": 99987.3,
+    "high": 105865.22,
+    "low": 99950.77,
+    "close": 104077.48,
+    "volume": 39171.85292,
+    "quoteVolume": 4040993985.4750466,
+    "performance": 4.0906995188388855,
+    "volatility": 5.915201230556278,
+    "heatmapIntensity": 0.40906995188388856,
+    "trend": "up",
+    "numberOfTrades": 3886907
+  },
+  {
+    "date": "2025-01-18",
+    "day": 18,
+    "open": 104077.47,
+    "high": 104988.88,
+    "low": 102277.55,
+    "close": 104556.23,
+    "volume": 24307.82998,
+    "quoteVolume": 2521522119.379525,
+    "performance": 0.46000349547312663,
+    "volatility": 2.6051075223100657,
+    "heatmapIntensity": 0.04600034954731266,
+    "trend": "up",
+    "numberOfTrades": 3403162
+  },
+  {
+    "date": "2025-01-19",
+    "day": 19,
+    "open": 104556.23,
+    "high": 106422.43,
+    "low": 99651.6,
+    "close": 101331.57,
+    "volume": 43397.28298,
+    "quoteVolume": 4513423971.410253,
+    "performance": -3.084139510385932,
+    "volatility": 6.475778631268541,
+    "heatmapIntensity": 0.3084139510385932,
+    "trend": "down",
+    "numberOfTrades": 5271920
+  },
+  {
+    "date": "2025-01-20",
+    "day": 20,
+    "open": 101331.57,
+    "high": 109588,
+    "low": 99550,
+    "close": 102260.01,
+    "volume": 89529.231732,
+    "quoteVolume": 9398787064.320715,
+    "performance": 0.9162396279856195,
+    "volatility": 9.906093431691623,
+    "heatmapIntensity": 0.09162396279856196,
+    "trend": "up",
+    "numberOfTrades": 11597937
+  },
+  {
+    "date": "2025-01-21",
+    "day": 21,
+    "open": 102260,
+    "high": 107240.81,
+    "low": 100119.04,
+    "close": 106143.82,
+    "volume": 45941.02002,
+    "quoteVolume": 4768512258.156502,
+    "performance": 3.7979855270878224,
+    "volatility": 6.964375122237438,
+    "heatmapIntensity": 0.37979855270878227,
+    "trend": "up",
+    "numberOfTrades": 6842980
+  },
+  {
+    "date": "2025-01-22",
+    "day": 22,
+    "open": 106143.82,
+    "high": 106394.46,
+    "low": 103339.12,
+    "close": 103706.66,
+    "volume": 22248.69254,
+    "quoteVolume": 2331144640.658579,
+    "performance": -2.296092226565808,
+    "volatility": 2.8784907119416,
+    "heatmapIntensity": 0.22960922265658082,
+    "trend": "down",
+    "numberOfTrades": 4364035
+  },
+  {
+    "date": "2025-01-23",
+    "day": 23,
+    "open": 103706.66,
+    "high": 106850,
+    "low": 101262.28,
+    "close": 103910.34,
+    "volume": 53953.12031,
+    "quoteVolume": 5610760848.131639,
+    "performance": 0.19640011547955843,
+    "volatility": 5.388004974801041,
+    "heatmapIntensity": 0.019640011547955843,
+    "trend": "up",
+    "numberOfTrades": 6961383
+  },
+  {
+    "date": "2025-01-24",
+    "day": 24,
+    "open": 103910.35,
+    "high": 107120,
+    "low": 102750,
+    "close": 104870.5,
+    "volume": 23609.24017,
+    "quoteVolume": 2483818574.373748,
+    "performance": 0.9240176748514408,
+    "volatility": 4.20554834046849,
+    "heatmapIntensity": 0.09240176748514409,
+    "trend": "up",
+    "numberOfTrades": 4798886
+  },
+  {
+    "date": "2025-01-25",
+    "day": 25,
+    "open": 104870.51,
+    "high": 105286.52,
+    "low": 104106.09,
+    "close": 104746.85,
+    "volume": 9068.32377,
+    "quoteVolume": 949511531.3578017,
+    "performance": -0.11791684812059075,
+    "volatility": 1.1256071892851554,
+    "heatmapIntensity": 0.011791684812059075,
+    "trend": "down",
+    "numberOfTrades": 1770765
+  },
+  {
+    "date": "2025-01-26",
+    "day": 26,
+    "open": 104746.86,
+    "high": 105500,
+    "low": 102520.44,
+    "close": 102620,
+    "volume": 9812.51238,
+    "quoteVolume": 1024352365.4715523,
+    "performance": -2.030476140287165,
+    "volatility": 2.8445339554808586,
+    "heatmapIntensity": 0.20304761402871652,
+    "trend": "down",
+    "numberOfTrades": 1813011
+  },
+  {
+    "date": "2025-01-27",
+    "day": 27,
+    "open": 102620.01,
+    "high": 103260,
+    "low": 97777.77,
+    "close": 102082.83,
+    "volume": 50758.1341,
+    "quoteVolume": 5092886322.829244,
+    "performance": -0.5234651604496949,
+    "volatility": 5.342262196232485,
+    "heatmapIntensity": 0.052346516044969496,
+    "trend": "down",
+    "numberOfTrades": 9368910
+  },
+  {
+    "date": "2025-01-28",
+    "day": 28,
+    "open": 102082.83,
+    "high": 103800,
+    "low": 100272.68,
+    "close": 101335.52,
+    "volume": 22022.05765,
+    "quoteVolume": 2253977324.036209,
+    "performance": -0.7320623850259614,
+    "volatility": 3.455350914546557,
+    "heatmapIntensity": 0.07320623850259614,
+    "trend": "down",
+    "numberOfTrades": 5428644
+  },
+  {
+    "date": "2025-01-29",
+    "day": 29,
+    "open": 101335.52,
+    "high": 104782.68,
+    "low": 101328.01,
+    "close": 103733.24,
+    "volume": 23155.35802,
+    "quoteVolume": 2380383694.772136,
+    "performance": 2.366119994252757,
+    "volatility": 3.4091402501314425,
+    "heatmapIntensity": 0.2366119994252757,
+    "trend": "up",
+    "numberOfTrades": 5189699
+  },
+  {
+    "date": "2025-01-30",
+    "day": 30,
+    "open": 103733.25,
+    "high": 106457.44,
+    "low": 103278.54,
+    "close": 104722.94,
+    "volume": 19374.07472,
+    "quoteVolume": 2038112603.5126412,
+    "performance": 0.954072103207026,
+    "volatility": 3.064494749754788,
+    "heatmapIntensity": 0.0954072103207026,
+    "trend": "up",
+    "numberOfTrades": 3990075
+  },
+  {
+    "date": "2025-01-31",
+    "day": 31,
+    "open": 104722.94,
+    "high": 106012,
+    "low": 101560,
+    "close": 102429.56,
+    "volume": 21983.18193,
+    "quoteVolume": 2282174002.1952176,
+    "performance": -2.189949976576292,
+    "volatility": 4.251217546031462,
+    "heatmapIntensity": 0.21899499765762923,
+    "trend": "down",
+    "numberOfTrades": 4331904
+  },
+  {
+    "date": "2025-02-01",
+    "day": 1,
+    "open": 102429.56,
+    "high": 102783.71,
+    "low": 100279.51,
+    "close": 100635.65,
+    "volume": 12290.95747,
+    "quoteVolume": 1250354228.2372296,
+    "performance": -1.7513596660963922,
+    "volatility": 2.4448020669033546,
+    "heatmapIntensity": 0.1751359666096392,
+    "trend": "down",
+    "numberOfTrades": 2588786
+  },
+  {
+    "date": "2025-02-02",
+    "day": 2,
+    "open": 100635.66,
+    "high": 101456.6,
+    "low": 96150,
+    "close": 97700.59,
+    "volume": 34619.49939,
+    "quoteVolume": 3412084312.5836277,
+    "performance": -2.916530780441055,
+    "volatility": 5.273081132473326,
+    "heatmapIntensity": 0.2916530780441055,
+    "trend": "down",
+    "numberOfTrades": 7202339
+  },
+  {
+    "date": "2025-02-03",
+    "day": 3,
+    "open": 97700.59,
+    "high": 102500.01,
+    "low": 91231,
+    "close": 101328.52,
+    "volume": 75164.7385,
+    "quoteVolume": 7228589180.711621,
+    "performance": 3.7133143208244777,
+    "volatility": 11.53422922011013,
+    "heatmapIntensity": 0.3713314320824478,
+    "trend": "up",
+    "numberOfTrades": 10625262
+  },
+  {
+    "date": "2025-02-04",
+    "day": 4,
+    "open": 101328.51,
+    "high": 101732.31,
+    "low": 96150,
+    "close": 97763.13,
+    "volume": 40267.98697,
+    "quoteVolume": 3989698644.2649307,
+    "performance": -3.518634587639738,
+    "volatility": 5.509120779531839,
+    "heatmapIntensity": 0.3518634587639738,
+    "trend": "down",
+    "numberOfTrades": 6618911
+  },
+  {
+    "date": "2025-02-05",
+    "day": 5,
+    "open": 97763.14,
+    "high": 99149,
+    "low": 96155,
+    "close": 96612.43,
+    "volume": 26233.30444,
+    "quoteVolume": 2562342153.829685,
+    "performance": -1.1770387080447768,
+    "volatility": 3.062503925303545,
+    "heatmapIntensity": 0.11770387080447768,
+    "trend": "down",
+    "numberOfTrades": 4471763
+  },
+  {
+    "date": "2025-02-06",
+    "day": 6,
+    "open": 96612.44,
+    "high": 99120,
+    "low": 95676.64,
+    "close": 96554.35,
+    "volume": 23515.20405,
+    "quoteVolume": 2289071921.2175603,
+    "performance": -0.06012683252798139,
+    "volatility": 3.564095886616672,
+    "heatmapIntensity": 0.00601268325279814,
+    "trend": "down",
+    "numberOfTrades": 4242807
+  },
+  {
+    "date": "2025-02-07",
+    "day": 7,
+    "open": 96554.35,
+    "high": 100137.99,
+    "low": 95620.34,
+    "close": 96506.8,
+    "volume": 31794.22065,
+    "quoteVolume": 3107592434.6738343,
+    "performance": -0.04924687494660045,
+    "volatility": 4.678867394374266,
+    "heatmapIntensity": 0.004924687494660044,
+    "trend": "down",
+    "numberOfTrades": 5012456
+  },
+  {
+    "date": "2025-02-08",
+    "day": 8,
+    "open": 96506.8,
+    "high": 96880,
+    "low": 95688,
+    "close": 96444.74,
+    "volume": 10147.24294,
+    "quoteVolume": 977040267.5158631,
+    "performance": -0.06430634939713852,
+    "volatility": 1.2351461244181758,
+    "heatmapIntensity": 0.006430634939713851,
+    "trend": "down",
+    "numberOfTrades": 1757892
+  },
+  {
+    "date": "2025-02-09",
+    "day": 9,
+    "open": 96444.75,
+    "high": 97323.09,
+    "low": 94713,
+    "close": 96462.75,
+    "volume": 14120.91613,
+    "quoteVolume": 1359495152.3107975,
+    "performance": 0.018663535340181815,
+    "volatility": 2.7063059420030604,
+    "heatmapIntensity": 0.0018663535340181815,
+    "trend": "up",
+    "numberOfTrades": 2293192
+  },
+  {
+    "date": "2025-02-10",
+    "day": 10,
+    "open": 96462.75,
+    "high": 98345,
+    "low": 95256,
+    "close": 97430.82,
+    "volume": 20572.87537,
+    "quoteVolume": 1999112052.6687863,
+    "performance": 1.003568735081684,
+    "volatility": 3.202272379752806,
+    "heatmapIntensity": 0.1003568735081684,
+    "trend": "up",
+    "numberOfTrades": 3475919
+  },
+  {
+    "date": "2025-02-11",
+    "day": 11,
+    "open": 97430.82,
+    "high": 98478.42,
+    "low": 94876.88,
+    "close": 95778.2,
+    "volume": 18647.76379,
+    "quoteVolume": 1806534846.3863194,
+    "performance": -1.696198389790838,
+    "volatility": 3.696509995502443,
+    "heatmapIntensity": 0.16961983897908378,
+    "trend": "down",
+    "numberOfTrades": 3716586
+  },
+  {
+    "date": "2025-02-12",
+    "day": 12,
+    "open": 95778.21,
+    "high": 98119.99,
+    "low": 94088.23,
+    "close": 97869.99,
+    "volume": 29151.16625,
+    "quoteVolume": 2800142168.3943653,
+    "performance": 2.1839831836489725,
+    "volatility": 4.209475203180357,
+    "heatmapIntensity": 0.21839831836489726,
+    "trend": "up",
+    "numberOfTrades": 4992737
+  },
+  {
+    "date": "2025-02-13",
+    "day": 13,
+    "open": 97870,
+    "high": 98083.91,
+    "low": 95217.36,
+    "close": 96608.14,
+    "volume": 19921.77616,
+    "quoteVolume": 1916988246.3921187,
+    "performance": -1.2893225707571274,
+    "volatility": 2.9289363441299714,
+    "heatmapIntensity": 0.12893225707571274,
+    "trend": "down",
+    "numberOfTrades": 3909456
+  },
+  {
+    "date": "2025-02-14",
+    "day": 14,
+    "open": 96608.13,
+    "high": 98826,
+    "low": 96252.82,
+    "close": 97500.48,
+    "volume": 18173.02646,
+    "quoteVolume": 1768073218.8690155,
+    "performance": 0.92368002568727,
+    "volatility": 2.6635232459214278,
+    "heatmapIntensity": 0.092368002568727,
+    "trend": "up",
+    "numberOfTrades": 3499564
+  },
+  {
+    "date": "2025-02-15",
+    "day": 15,
+    "open": 97500.47,
+    "high": 97972.26,
+    "low": 97223.58,
+    "close": 97569.66,
+    "volume": 7349.37683,
+    "quoteVolume": 717245393.778092,
+    "performance": 0.07096376048238776,
+    "volatility": 0.7678732215342069,
+    "heatmapIntensity": 0.0070963760482387755,
+    "trend": "up",
+    "numberOfTrades": 1694327
+  },
+  {
+    "date": "2025-02-16",
+    "day": 16,
+    "open": 97569.67,
+    "high": 97704.47,
+    "low": 96046.18,
+    "close": 96118.12,
+    "volume": 8191.4249,
+    "quoteVolume": 794694242.2949733,
+    "performance": -1.4877061693454563,
+    "volatility": 1.699595786272525,
+    "heatmapIntensity": 0.14877061693454563,
+    "trend": "down",
+    "numberOfTrades": 1596701
+  },
+  {
+    "date": "2025-02-17",
+    "day": 17,
+    "open": 96118.12,
+    "high": 97046.59,
+    "low": 95205,
+    "close": 95780,
+    "volume": 16492.0451,
+    "quoteVolume": 1584593526.1754677,
+    "performance": -0.35177550289164555,
+    "volatility": 1.9159654808063211,
+    "heatmapIntensity": 0.035177550289164555,
+    "trend": "down",
+    "numberOfTrades": 2831237
+  },
+  {
+    "date": "2025-02-18",
+    "day": 18,
+    "open": 95780.01,
+    "high": 96753.91,
+    "low": 93388.09,
+    "close": 95671.74,
+    "volume": 23368.19471,
+    "quoteVolume": 2223994802.892005,
+    "performance": -0.11304028888699169,
+    "volatility": 3.514115314876254,
+    "heatmapIntensity": 0.011304028888699169,
+    "trend": "down",
+    "numberOfTrades": 4234248
+  },
+  {
+    "date": "2025-02-19",
+    "day": 19,
+    "open": 95671.74,
+    "high": 96899.99,
+    "low": 95029.99,
+    "close": 96644.37,
+    "volume": 16438.50954,
+    "quoteVolume": 1576817572.1032505,
+    "performance": 1.0166324977469732,
+    "volatility": 1.9546001776491155,
+    "heatmapIntensity": 0.10166324977469732,
+    "trend": "up",
+    "numberOfTrades": 2784225
+  },
+  {
+    "date": "2025-02-20",
+    "day": 20,
+    "open": 96644.37,
+    "high": 98711.36,
+    "low": 96415.09,
+    "close": 98305,
+    "volume": 17057.39177,
+    "quoteVolume": 1663386824.7315507,
+    "performance": 1.7182894357943508,
+    "volatility": 2.3759997607724115,
+    "heatmapIntensity": 0.17182894357943507,
+    "trend": "up",
+    "numberOfTrades": 2386973
+  },
+  {
+    "date": "2025-02-21",
+    "day": 21,
+    "open": 98305.01,
+    "high": 99475,
+    "low": 94871.95,
+    "close": 96181.98,
+    "volume": 32249.2814,
+    "quoteVolume": 3143975917.5734644,
+    "performance": -2.159635607585004,
+    "volatility": 4.682416491285646,
+    "heatmapIntensity": 0.21596356075850037,
+    "trend": "down",
+    "numberOfTrades": 4528525
+  },
+  {
+    "date": "2025-02-22",
+    "day": 22,
+    "open": 96181.99,
+    "high": 96980,
+    "low": 95770.49,
+    "close": 96551.01,
+    "volume": 11268.17708,
+    "quoteVolume": 1087077133.8226364,
+    "performance": 0.3836685017641967,
+    "volatility": 1.2575223282446066,
+    "heatmapIntensity": 0.03836685017641967,
+    "trend": "up",
+    "numberOfTrades": 1506418
+  },
+  {
+    "date": "2025-02-23",
+    "day": 23,
+    "open": 96551.01,
+    "high": 96650,
+    "low": 95227.94,
+    "close": 96258,
+    "volume": 10884.84913,
+    "quoteVolume": 1044392011.7910241,
+    "performance": -0.30347688750225893,
+    "volatility": 1.4728587510374027,
+    "heatmapIntensity": 0.030347688750225893,
+    "trend": "down",
+    "numberOfTrades": 1457368
+  },
+  {
+    "date": "2025-02-24",
+    "day": 24,
+    "open": 96258,
+    "high": 96500,
+    "low": 91349.26,
+    "close": 91552.88,
+    "volume": 31550.10299,
+    "quoteVolume": 2981809595.445377,
+    "performance": -4.888030085811044,
+    "volatility": 5.350973425585411,
+    "heatmapIntensity": 0.4888030085811044,
+    "trend": "down",
+    "numberOfTrades": 4972684
+  },
+  {
+    "date": "2025-02-25",
+    "day": 25,
+    "open": 91552.88,
+    "high": 92540.69,
+    "low": 86050.99,
+    "close": 88680.4,
+    "volume": 78333.11111,
+    "quoteVolume": 6962982500.904474,
+    "performance": -3.1375091641027684,
+    "volatility": 7.088471711649046,
+    "heatmapIntensity": 0.31375091641027686,
+    "trend": "down",
+    "numberOfTrades": 10289145
+  },
+  {
+    "date": "2025-02-26",
+    "day": 26,
+    "open": 88680.39,
+    "high": 89414.15,
+    "low": 82256.01,
+    "close": 84250.09,
+    "volume": 56893.54409,
+    "quoteVolume": 4898429925.6364765,
+    "performance": -4.9958057243546214,
+    "volatility": 8.07184091093871,
+    "heatmapIntensity": 0.49958057243546217,
+    "trend": "down",
+    "numberOfTrades": 8490006
+  },
+  {
+    "date": "2025-02-27",
+    "day": 27,
+    "open": 84250.09,
+    "high": 87078.46,
+    "low": 82716.49,
+    "close": 84708.58,
+    "volume": 42505.45439,
+    "quoteVolume": 3618738891.2221622,
+    "performance": 0.5442011990729093,
+    "volatility": 5.177406932146899,
+    "heatmapIntensity": 0.05442011990729093,
+    "trend": "up",
+    "numberOfTrades": 6357581
+  },
+  {
+    "date": "2025-02-28",
+    "day": 28,
+    "open": 84708.57,
+    "high": 85120,
+    "low": 78258.52,
+    "close": 84349.94,
+    "volume": 83648.03969,
+    "quoteVolume": 6806705236.690679,
+    "performance": -0.423369205736804,
+    "volatility": 8.100101323868406,
+    "heatmapIntensity": 0.042336920573680395,
+    "trend": "down",
+    "numberOfTrades": 11344216
+  },
+  {
+    "date": "2025-03-01",
+    "day": 1,
+    "open": 84349.95,
+    "high": 86558,
+    "low": 83824.78,
+    "close": 86064.53,
+    "volume": 25785.05464,
+    "quoteVolume": 2194003507.852643,
+    "performance": 2.0326983003546557,
+    "volatility": 3.240333870974436,
+    "heatmapIntensity": 0.20326983003546556,
+    "trend": "up",
+    "numberOfTrades": 3700728
+  },
+  {
+    "date": "2025-03-02",
+    "day": 2,
+    "open": 86064.54,
+    "high": 95000,
+    "low": 85050.6,
+    "close": 94270,
+    "volume": 54889.09045,
+    "quoteVolume": 4972549515.788669,
+    "performance": 9.53407756551073,
+    "volatility": 11.56039409494316,
+    "heatmapIntensity": 0.953407756551073,
+    "trend": "up",
+    "numberOfTrades": 7403218
+  },
+  {
+    "date": "2025-03-03",
+    "day": 3,
+    "open": 94269.99,
+    "high": 94416.46,
+    "low": 85117.11,
+    "close": 86220.61,
+    "volume": 59171.10218,
+    "quoteVolume": 5321123743.471923,
+    "performance": -8.53864522527265,
+    "volatility": 9.864592114627364,
+    "heatmapIntensity": 0.853864522527265,
+    "trend": "down",
+    "numberOfTrades": 9797860
+  },
+  {
+    "date": "2025-03-04",
+    "day": 4,
+    "open": 86221.16,
+    "high": 88967.52,
+    "low": 81500,
+    "close": 87281.98,
+    "volume": 55609.10706,
+    "quoteVolume": 4704901219.590436,
+    "performance": 1.2303476316022568,
+    "volatility": 8.660890203750453,
+    "heatmapIntensity": 0.12303476316022569,
+    "trend": "up",
+    "numberOfTrades": 10326631
+  },
+  {
+    "date": "2025-03-05",
+    "day": 5,
+    "open": 87281.98,
+    "high": 91000,
+    "low": 86334.53,
+    "close": 90606.01,
+    "volume": 38264.01163,
+    "quoteVolume": 3400243670.3049755,
+    "performance": 3.8083806073143607,
+    "volatility": 5.34528433016758,
+    "heatmapIntensity": 0.38083806073143606,
+    "trend": "up",
+    "numberOfTrades": 8070266
+  },
+  {
+    "date": "2025-03-06",
+    "day": 6,
+    "open": 90606,
+    "high": 92810.64,
+    "low": 87836,
+    "close": 89931.89,
+    "volume": 34342.44902,
+    "quoteVolume": 3105145628.3993993,
+    "performance": -0.7440015010043491,
+    "volatility": 5.490409023684966,
+    "heatmapIntensity": 0.07440015010043491,
+    "trend": "down",
+    "numberOfTrades": 7643526
+  },
+  {
+    "date": "2025-03-07",
+    "day": 7,
+    "open": 89931.88,
+    "high": 91283.02,
+    "low": 84667.03,
+    "close": 86801.75,
+    "volume": 57980.35713,
+    "quoteVolume": 5097554826.613157,
+    "performance": -3.4805566168526716,
+    "volatility": 7.356668180404996,
+    "heatmapIntensity": 0.34805566168526714,
+    "trend": "down",
+    "numberOfTrades": 9510442
+  },
+  {
+    "date": "2025-03-08",
+    "day": 8,
+    "open": 86801.74,
+    "high": 86897.25,
+    "low": 85218.47,
+    "close": 86222.45,
+    "volume": 12989.23054,
+    "quoteVolume": 1119358968.6520054,
+    "performance": -0.6673714144440055,
+    "volatility": 1.934039571096154,
+    "heatmapIntensity": 0.06673714144440054,
+    "trend": "down",
+    "numberOfTrades": 2553974
+  },
+  {
+    "date": "2025-03-09",
+    "day": 9,
+    "open": 86222.46,
+    "high": 86500,
+    "low": 80000,
+    "close": 80734.37,
+    "volume": 26115.39345,
+    "quoteVolume": 2173552660.454479,
+    "performance": -6.365035281990343,
+    "volatility": 7.538639004268726,
+    "heatmapIntensity": 0.6365035281990343,
+    "trend": "down",
+    "numberOfTrades": 5189138
+  },
+  {
+    "date": "2025-03-10",
+    "day": 10,
+    "open": 80734.48,
+    "high": 84123.46,
+    "low": 77459.91,
+    "close": 78595.86,
+    "volume": 47633.38405,
+    "quoteVolume": 3834924947.758186,
+    "performance": -2.6489549446531337,
+    "volatility": 8.253660641649024,
+    "heatmapIntensity": 0.26489549446531335,
+    "trend": "down",
+    "numberOfTrades": 8701538
+  },
+  {
+    "date": "2025-03-11",
+    "day": 11,
+    "open": 78595.86,
+    "high": 83617.4,
+    "low": 76606,
+    "close": 82932.99,
+    "volume": 48770.06853,
+    "quoteVolume": 3927000827.1107917,
+    "performance": 5.518267756087922,
+    "volatility": 8.9208261096704,
+    "heatmapIntensity": 0.5518267756087922,
+    "trend": "up",
+    "numberOfTrades": 6983310
+  },
+  {
+    "date": "2025-03-12",
+    "day": 12,
+    "open": 82932.99,
+    "high": 84539.85,
+    "low": 80607.65,
+    "close": 83680.12,
+    "volume": 31933.986,
+    "quoteVolume": 2638600996.825396,
+    "performance": 0.9008839546240768,
+    "volatility": 4.74141834268849,
+    "heatmapIntensity": 0.09008839546240768,
+    "trend": "up",
+    "numberOfTrades": 5253577
+  },
+  {
+    "date": "2025-03-13",
+    "day": 13,
+    "open": 83680.12,
+    "high": 84336.33,
+    "low": 79939.9,
+    "close": 81115.78,
+    "volume": 27546.27412,
+    "quoteVolume": 2260870111.2393894,
+    "performance": -3.064455452501737,
+    "volatility": 5.253852408433458,
+    "heatmapIntensity": 0.3064455452501737,
+    "trend": "down",
+    "numberOfTrades": 4367093
+  },
+  {
+    "date": "2025-03-14",
+    "day": 14,
+    "open": 81115.78,
+    "high": 85309.71,
+    "low": 80818.84,
+    "close": 83983.2,
+    "volume": 26858.52755,
+    "quoteVolume": 2244729595.5411716,
+    "performance": 3.5349718636743654,
+    "volatility": 5.536370358517184,
+    "heatmapIntensity": 0.35349718636743654,
+    "trend": "up",
+    "numberOfTrades": 3290987
+  },
+  {
+    "date": "2025-03-15",
+    "day": 15,
+    "open": 83983.19,
+    "high": 84676.28,
+    "low": 83618,
+    "close": 84338.44,
+    "volume": 11324.7332,
+    "quoteVolume": 953445671.8337505,
+    "performance": 0.4230013172874238,
+    "volatility": 1.2601093147331017,
+    "heatmapIntensity": 0.04230013172874238,
+    "trend": "up",
+    "numberOfTrades": 1329670
+  },
+  {
+    "date": "2025-03-16",
+    "day": 16,
+    "open": 84338.44,
+    "high": 85117.04,
+    "low": 81981.12,
+    "close": 82574.53,
+    "volume": 17596.12531,
+    "quoteVolume": 1468056556.2967227,
+    "performance": -2.091466240067997,
+    "volatility": 3.718257060481553,
+    "heatmapIntensity": 0.2091466240067997,
+    "trend": "down",
+    "numberOfTrades": 2767947
+  },
+  {
+    "date": "2025-03-17",
+    "day": 17,
+    "open": 82574.52,
+    "high": 84756.83,
+    "low": 82456,
+    "close": 84010.03,
+    "volume": 17214.74358,
+    "quoteVolume": 1437716814.0468738,
+    "performance": 1.7384418341154082,
+    "volatility": 2.786367998263873,
+    "heatmapIntensity": 0.17384418341154081,
+    "trend": "up",
+    "numberOfTrades": 3014756
+  },
+  {
+    "date": "2025-03-18",
+    "day": 18,
+    "open": 84010.02,
+    "high": 84021.74,
+    "low": 81134.66,
+    "close": 82715.03,
+    "volume": 17610.89883,
+    "quoteVolume": 1450813055.479726,
+    "performance": -1.5414708864490274,
+    "volatility": 3.4365900638995224,
+    "heatmapIntensity": 0.15414708864490273,
+    "trend": "down",
+    "numberOfTrades": 3126371
+  },
+  {
+    "date": "2025-03-19",
+    "day": 19,
+    "open": 82715.03,
+    "high": 87000,
+    "low": 82547.16,
+    "close": 86845.94,
+    "volume": 28151.05374,
+    "quoteVolume": 2375813941.9437623,
+    "performance": 4.994146771149093,
+    "volatility": 5.383350522873529,
+    "heatmapIntensity": 0.4994146771149093,
+    "trend": "up",
+    "numberOfTrades": 3774761
+  },
+  {
+    "date": "2025-03-20",
+    "day": 20,
+    "open": 86845.93,
+    "high": 87453.67,
+    "low": 83655.23,
+    "close": 84223.39,
+    "volume": 22090.30463,
+    "quoteVolume": 1885241921.1556518,
+    "performance": -3.0197615478353375,
+    "volatility": 4.373768580749844,
+    "heatmapIntensity": 0.30197615478353373,
+    "trend": "down",
+    "numberOfTrades": 3252595
+  },
+  {
+    "date": "2025-03-21",
+    "day": 21,
+    "open": 84223.38,
+    "high": 84850.33,
+    "low": 83175.25,
+    "close": 84088.79,
+    "volume": 11956.97443,
+    "quoteVolume": 1005135519.2560017,
+    "performance": -0.1598012333392593,
+    "volatility": 1.988853926308825,
+    "heatmapIntensity": 0.01598012333392593,
+    "trend": "down",
+    "numberOfTrades": 2360005
+  },
+  {
+    "date": "2025-03-22",
+    "day": 22,
+    "open": 84088.79,
+    "high": 84539.17,
+    "low": 83625.1,
+    "close": 83840.59,
+    "volume": 5420.22114,
+    "quoteVolume": 456235443.8016522,
+    "performance": -0.29516419489446466,
+    "volatility": 1.087029555306947,
+    "heatmapIntensity": 0.029516419489446465,
+    "trend": "down",
+    "numberOfTrades": 864481
+  },
+  {
+    "date": "2025-03-23",
+    "day": 23,
+    "open": 83840.59,
+    "high": 86129.64,
+    "low": 83809.75,
+    "close": 86082.5,
+    "volume": 8461.97813,
+    "quoteVolume": 718692319.1499038,
+    "performance": 2.6740150564303082,
+    "volatility": 2.767024898083374,
+    "heatmapIntensity": 0.26740150564303083,
+    "trend": "up",
+    "numberOfTrades": 1206533
+  },
+  {
+    "date": "2025-03-24",
+    "day": 24,
+    "open": 86082.5,
+    "high": 88765.43,
+    "low": 85519.09,
+    "close": 87498.16,
+    "volume": 30115.62111,
+    "quoteVolume": 2636765917.9518433,
+    "performance": 1.6445386692998036,
+    "volatility": 3.7711962361687874,
+    "heatmapIntensity": 0.16445386692998037,
+    "trend": "up",
+    "numberOfTrades": 2916713
+  },
+  {
+    "date": "2025-03-25",
+    "day": 25,
+    "open": 87498.16,
+    "high": 88539.63,
+    "low": 86310,
+    "close": 87392.87,
+    "volume": 22643.25248,
+    "quoteVolume": 1979571590.8982937,
+    "performance": -0.12033395902269048,
+    "volatility": 2.548202156479639,
+    "heatmapIntensity": 0.012033395902269048,
+    "trend": "down",
+    "numberOfTrades": 2802815
+  },
+  {
+    "date": "2025-03-26",
+    "day": 26,
+    "open": 87392.88,
+    "high": 88275,
+    "low": 85860,
+    "close": 86909.17,
+    "volume": 18408.78485,
+    "quoteVolume": 1606406955.5864632,
+    "performance": -0.5534890256506095,
+    "volatility": 2.7633830124376266,
+    "heatmapIntensity": 0.055348902565060955,
+    "trend": "down",
+    "numberOfTrades": 2380154
+  },
+  {
+    "date": "2025-03-27",
+    "day": 27,
+    "open": 86909.17,
+    "high": 87756.39,
+    "low": 85800,
+    "close": 87232.01,
+    "volume": 17098.03897,
+    "quoteVolume": 1487968807.7079022,
+    "performance": 0.37146828119517944,
+    "volatility": 2.2510743112608247,
+    "heatmapIntensity": 0.037146828119517944,
+    "trend": "up",
+    "numberOfTrades": 2376381
+  },
+  {
+    "date": "2025-03-28",
+    "day": 28,
+    "open": 87232.01,
+    "high": 87515.67,
+    "low": 83585,
+    "close": 84424.38,
+    "volume": 27182.73169,
+    "quoteVolume": 2309946560.664114,
+    "performance": -3.2185776757866638,
+    "volatility": 4.505994989683258,
+    "heatmapIntensity": 0.32185776757866635,
+    "trend": "down",
+    "numberOfTrades": 3236085
+  },
+  {
+    "date": "2025-03-29",
+    "day": 29,
+    "open": 84424.38,
+    "high": 84624.73,
+    "low": 81644.81,
+    "close": 82648.54,
+    "volume": 11696.39864,
+    "quoteVolume": 970199917.9868716,
+    "performance": -2.1034682161716924,
+    "volatility": 3.529691304810291,
+    "heatmapIntensity": 0.21034682161716925,
+    "trend": "down",
+    "numberOfTrades": 2172387
+  },
+  {
+    "date": "2025-03-30",
+    "day": 30,
+    "open": 82648.53,
+    "high": 83534.64,
+    "low": 81565,
+    "close": 82389.99,
+    "volume": 9864.49508,
+    "quoteVolume": 816584795.5288126,
+    "performance": -0.3128186308939719,
+    "volatility": 2.383151884250088,
+    "heatmapIntensity": 0.03128186308939719,
+    "trend": "down",
+    "numberOfTrades": 1907663
+  },
+  {
+    "date": "2025-03-31",
+    "day": 31,
+    "open": 82390,
+    "high": 83943.08,
+    "low": 81278.52,
+    "close": 82550.01,
+    "volume": 20569.13885,
+    "quoteVolume": 1696009191.0809648,
+    "performance": 0.19421046243475515,
+    "volatility": 3.23408180604442,
+    "heatmapIntensity": 0.019421046243475515,
+    "trend": "up",
+    "numberOfTrades": 3964358
+  },
+  {
+    "date": "2025-04-01",
+    "day": 1,
+    "open": 82550,
+    "high": 85579.46,
+    "low": 82432.74,
+    "close": 85158.34,
+    "volume": 20190.39697,
+    "quoteVolume": 1698895702.5754683,
+    "performance": 3.1597092671108378,
+    "volatility": 3.8118958207147196,
+    "heatmapIntensity": 0.3159709267110838,
+    "trend": "up",
+    "numberOfTrades": 3328693
+  },
+  {
+    "date": "2025-04-02",
+    "day": 2,
+    "open": 85158.35,
+    "high": 88500,
+    "low": 82320,
+    "close": 82516.29,
+    "volume": 39931.457,
+    "quoteVolume": 3417279759.830764,
+    "performance": -3.1025260588069306,
+    "volatility": 7.257068743112096,
+    "heatmapIntensity": 0.31025260588069303,
+    "trend": "down",
+    "numberOfTrades": 5338238
+  },
+  {
+    "date": "2025-04-03",
+    "day": 3,
+    "open": 82516.28,
+    "high": 83998.02,
+    "low": 81211.24,
+    "close": 83213.09,
+    "volume": 27337.84135,
+    "quoteVolume": 2259299724.8643928,
+    "performance": 0.8444515433802853,
+    "volatility": 3.3772487077701503,
+    "heatmapIntensity": 0.08444515433802853,
+    "trend": "up",
+    "numberOfTrades": 4117486
+  },
+  {
+    "date": "2025-04-04",
+    "day": 4,
+    "open": 83213.09,
+    "high": 84720,
+    "low": 81659,
+    "close": 83889.87,
+    "volume": 32915.53976,
+    "quoteVolume": 2739842666.426737,
+    "performance": 0.8133095406023246,
+    "volatility": 3.6785077924639022,
+    "heatmapIntensity": 0.08133095406023247,
+    "trend": "up",
+    "numberOfTrades": 4992586
+  },
+  {
+    "date": "2025-04-05",
+    "day": 5,
+    "open": 83889.87,
+    "high": 84266,
+    "low": 82379.95,
+    "close": 83537.99,
+    "volume": 9360.40468,
+    "quoteVolume": 779626577.9013436,
+    "performance": -0.4194546969735322,
+    "volatility": 2.24824522913196,
+    "heatmapIntensity": 0.04194546969735322,
+    "trend": "down",
+    "numberOfTrades": 1575750
+  },
+  {
+    "date": "2025-04-06",
+    "day": 6,
+    "open": 83537.99,
+    "high": 83817.63,
+    "low": 77153.83,
+    "close": 78430,
+    "volume": 27942.71436,
+    "quoteVolume": 2239085051.1529646,
+    "performance": -6.114571346521511,
+    "volatility": 7.976969520094992,
+    "heatmapIntensity": 0.6114571346521511,
+    "trend": "down",
+    "numberOfTrades": 3948493
+  },
+  {
+    "date": "2025-04-07",
+    "day": 7,
+    "open": 78430,
+    "high": 81243.58,
+    "low": 74508,
+    "close": 79163.24,
+    "volume": 78387.53089,
+    "quoteVolume": 6084614024.150647,
+    "performance": 0.934897360703819,
+    "volatility": 8.588014790258832,
+    "heatmapIntensity": 0.0934897360703819,
+    "trend": "up",
+    "numberOfTrades": 9736596
+  },
+  {
+    "date": "2025-04-08",
+    "day": 8,
+    "open": 79163.24,
+    "high": 80867.99,
+    "low": 76239.9,
+    "close": 76322.42,
+    "volume": 35317.32063,
+    "quoteVolume": 2775277777.102461,
+    "performance": -3.588559538492875,
+    "volatility": 5.8462614718649855,
+    "heatmapIntensity": 0.3588559538492875,
+    "trend": "down",
+    "numberOfTrades": 5512751
+  },
+  {
+    "date": "2025-04-09",
+    "day": 9,
+    "open": 76322.42,
+    "high": 83588,
+    "low": 74620,
+    "close": 82615.22,
+    "volume": 75488.28772,
+    "quoteVolume": 5980231256.222496,
+    "performance": 8.245021580814658,
+    "volatility": 11.750151528214122,
+    "heatmapIntensity": 0.8245021580814658,
+    "trend": "up",
+    "numberOfTrades": 7741252
+  },
+  {
+    "date": "2025-04-10",
+    "day": 10,
+    "open": 82615.22,
+    "high": 82753.21,
+    "low": 78464.36,
+    "close": 79607.3,
+    "volume": 33284.80718,
+    "quoteVolume": 2690294353.8478427,
+    "performance": -3.6408787630172723,
+    "volatility": 5.191355781658641,
+    "heatmapIntensity": 0.36408787630172723,
+    "trend": "down",
+    "numberOfTrades": 4529545
+  },
+  {
+    "date": "2025-04-11",
+    "day": 11,
+    "open": 79607.3,
+    "high": 84300,
+    "low": 78969.58,
+    "close": 83423.84,
+    "volume": 34435.43797,
+    "quoteVolume": 2830363945.1787524,
+    "performance": 4.79420857132448,
+    "volatility": 6.69589346705641,
+    "heatmapIntensity": 0.47942085713244803,
+    "trend": "up",
+    "numberOfTrades": 4423157
+  },
+  {
+    "date": "2025-04-12",
+    "day": 12,
+    "open": 83423.83,
+    "high": 85905,
+    "low": 82792.95,
+    "close": 85276.9,
+    "volume": 18470.74437,
+    "quoteVolume": 1557403252.9267516,
+    "performance": 2.2212717876894317,
+    "volatility": 3.730408925123676,
+    "heatmapIntensity": 0.22212717876894317,
+    "trend": "up",
+    "numberOfTrades": 2501196
+  },
+  {
+    "date": "2025-04-13",
+    "day": 13,
+    "open": 85276.91,
+    "high": 86100,
+    "low": 83034.23,
+    "close": 83760,
+    "volume": 24680.04181,
+    "quoteVolume": 2086106375.4392555,
+    "performance": -1.7788050716190391,
+    "volatility": 3.5950763225356126,
+    "heatmapIntensity": 0.1778805071619039,
+    "trend": "down",
+    "numberOfTrades": 3275879
+  },
+  {
+    "date": "2025-04-14",
+    "day": 14,
+    "open": 83760,
+    "high": 85799.99,
+    "low": 83678,
+    "close": 84591.58,
+    "volume": 28659.09348,
+    "quoteVolume": 2429132805.0815287,
+    "performance": 0.9928127984718264,
+    "volatility": 2.5334169054441324,
+    "heatmapIntensity": 0.09928127984718263,
+    "trend": "up",
+    "numberOfTrades": 3921522
+  },
+  {
+    "date": "2025-04-15",
+    "day": 15,
+    "open": 84591.58,
+    "high": 86496.42,
+    "low": 83600,
+    "close": 83643.99,
+    "volume": 20910.99528,
+    "quoteVolume": 1780972414.3956008,
+    "performance": -1.1201942320973275,
+    "volatility": 3.424005084193957,
+    "heatmapIntensity": 0.11201942320973275,
+    "trend": "down",
+    "numberOfTrades": 2910533
+  },
+  {
+    "date": "2025-04-16",
+    "day": 16,
+    "open": 83643.99,
+    "high": 85500,
+    "low": 83111.64,
+    "close": 84030.38,
+    "volume": 20867.24519,
+    "quoteVolume": 1753910031.2009242,
+    "performance": 0.46194592103987314,
+    "volatility": 2.8553874582023173,
+    "heatmapIntensity": 0.04619459210398731,
+    "trend": "up",
+    "numberOfTrades": 3264730
+  },
+  {
+    "date": "2025-04-17",
+    "day": 17,
+    "open": 84030.38,
+    "high": 85470.01,
+    "low": 83736.26,
+    "close": 84947.91,
+    "volume": 13728.84772,
+    "quoteVolume": 1161659427.386263,
+    "performance": 1.0919027142326367,
+    "volatility": 2.063241889421421,
+    "heatmapIntensity": 0.10919027142326368,
+    "trend": "up",
+    "numberOfTrades": 2003405
+  },
+  {
+    "date": "2025-04-18",
+    "day": 18,
+    "open": 84947.92,
+    "high": 85132.08,
+    "low": 84303.96,
+    "close": 84474.69,
+    "volume": 6529.96315,
+    "quoteVolume": 552648483.647487,
+    "performance": -0.5570825041978614,
+    "volatility": 0.9748561236107903,
+    "heatmapIntensity": 0.055708250419786144,
+    "trend": "down",
+    "numberOfTrades": 840009
+  },
+  {
+    "date": "2025-04-19",
+    "day": 19,
+    "open": 84474.7,
+    "high": 85677.99,
+    "low": 84364.45,
+    "close": 85077.01,
+    "volume": 9666.58153,
+    "quoteVolume": 823222752.2842493,
+    "performance": 0.7130063794248428,
+    "volatility": 1.55495077224306,
+    "heatmapIntensity": 0.07130063794248429,
+    "trend": "up",
+    "numberOfTrades": 875226
+  },
+  {
+    "date": "2025-04-20",
+    "day": 20,
+    "open": 85077,
+    "high": 85320.76,
+    "low": 83949.52,
+    "close": 85179.24,
+    "volume": 8091.67725,
+    "quoteVolume": 685253644.8918362,
+    "performance": 0.12017348989739322,
+    "volatility": 1.6117634613350151,
+    "heatmapIntensity": 0.012017348989739322,
+    "trend": "up",
+    "numberOfTrades": 944130
+  },
+  {
+    "date": "2025-04-21",
+    "day": 21,
+    "open": 85179.24,
+    "high": 88465.99,
+    "low": 85144.76,
+    "close": 87516.23,
+    "volume": 31773.37262,
+    "quoteVolume": 2773299591.467066,
+    "performance": 2.7436145239145016,
+    "volatility": 3.89910734117845,
+    "heatmapIntensity": 0.27436145239145016,
+    "trend": "up",
+    "numberOfTrades": 3041395
+  },
+  {
+    "date": "2025-04-22",
+    "day": 22,
+    "open": 87516.22,
+    "high": 93888,
+    "low": 87076.03,
+    "close": 93442.99,
+    "volume": 43872.74705,
+    "quoteVolume": 3967785064.12817,
+    "performance": 6.772196056913797,
+    "volatility": 7.783665702197834,
+    "heatmapIntensity": 0.6772196056913797,
+    "trend": "up",
+    "numberOfTrades": 3268475
+  },
+  {
+    "date": "2025-04-23",
+    "day": 23,
+    "open": 93442.99,
+    "high": 94696.05,
+    "low": 91935.41,
+    "close": 93691.08,
+    "volume": 27404.16808,
+    "quoteVolume": 2560279933.947952,
+    "performance": 0.2654987816635539,
+    "volatility": 2.954357517883363,
+    "heatmapIntensity": 0.02654987816635539,
+    "trend": "up",
+    "numberOfTrades": 3016536
+  },
+  {
+    "date": "2025-04-24",
+    "day": 24,
+    "open": 93691.07,
+    "high": 94005,
+    "low": 91660.01,
+    "close": 93980.47,
+    "volume": 19497.06071,
+    "quoteVolume": 1811120137.3146787,
+    "performance": 0.30888749589474657,
+    "volatility": 2.5028959536912163,
+    "heatmapIntensity": 0.030888749589474657,
+    "trend": "up",
+    "numberOfTrades": 2797383
+  },
+  {
+    "date": "2025-04-25",
+    "day": 25,
+    "open": 93980.47,
+    "high": 95758.04,
+    "low": 92855.96,
+    "close": 94638.68,
+    "volume": 27500.66648,
+    "quoteVolume": 2596877713.640173,
+    "performance": 0.7003689170739323,
+    "volatility": 3.087960722052132,
+    "heatmapIntensity": 0.07003689170739323,
+    "trend": "up",
+    "numberOfTrades": 3331828
+  },
+  {
+    "date": "2025-04-26",
+    "day": 26,
+    "open": 94638.68,
+    "high": 95199,
+    "low": 93870.69,
+    "close": 94628,
+    "volume": 9415.06875,
+    "quoteVolume": 889627361.8414447,
+    "performance": -0.01128502637610015,
+    "volatility": 1.4035593057722253,
+    "heatmapIntensity": 0.001128502637610015,
+    "trend": "down",
+    "numberOfTrades": 1475983
+  },
+  {
+    "date": "2025-04-27",
+    "day": 27,
+    "open": 94628,
+    "high": 95369,
+    "low": 93602.58,
+    "close": 93749.3,
+    "volume": 11162.841,
+    "quoteVolume": 1052334792.1866189,
+    "performance": -0.9285835059390424,
+    "volatility": 1.8666990742697704,
+    "heatmapIntensity": 0.09285835059390424,
+    "trend": "down",
+    "numberOfTrades": 1918160
+  },
+  {
+    "date": "2025-04-28",
+    "day": 28,
+    "open": 93749.29,
+    "high": 95630,
+    "low": 92800.01,
+    "close": 95011.18,
+    "volume": 22157.53351,
+    "quoteVolume": 2092532996.5551717,
+    "performance": 1.3460261939050413,
+    "volatility": 3.01867886146125,
+    "heatmapIntensity": 0.13460261939050414,
+    "trend": "up",
+    "numberOfTrades": 3424740
+  },
+  {
+    "date": "2025-04-29",
+    "day": 29,
+    "open": 95011.18,
+    "high": 95461.53,
+    "low": 93742.54,
+    "close": 94256.82,
+    "volume": 16955.3402,
+    "quoteVolume": 1607154803.4675477,
+    "performance": -0.7939697201950192,
+    "volatility": 1.809250237708873,
+    "heatmapIntensity": 0.07939697201950192,
+    "trend": "down",
+    "numberOfTrades": 3020875
+  },
+  {
+    "date": "2025-04-30",
+    "day": 30,
+    "open": 94256.82,
+    "high": 95228.45,
+    "low": 92910,
+    "close": 94172,
+    "volume": 17661.2751,
+    "quoteVolume": 1664825670.9831252,
+    "performance": -0.08998818334843779,
+    "volatility": 2.4597159123339796,
+    "heatmapIntensity": 0.00899881833484378,
+    "trend": "down",
+    "numberOfTrades": 3214149
+  },
+  {
+    "date": "2025-05-01",
+    "day": 1,
+    "open": 94172,
+    "high": 97424.02,
+    "low": 94130.43,
+    "close": 96489.91,
+    "volume": 21380.45343,
+    "quoteVolume": 2053857614.2732673,
+    "performance": 2.461357940789198,
+    "volatility": 3.4974196151722494,
+    "heatmapIntensity": 0.2461357940789198,
+    "trend": "up",
+    "numberOfTrades": 2925716
+  },
+  {
+    "date": "2025-05-02",
+    "day": 2,
+    "open": 96489.9,
+    "high": 97895.68,
+    "low": 96350,
+    "close": 96887.14,
+    "volume": 14905.74811,
+    "quoteVolume": 1446387651.5840576,
+    "performance": 0.4116907572709737,
+    "volatility": 1.6019085935419075,
+    "heatmapIntensity": 0.04116907572709737,
+    "trend": "up",
+    "numberOfTrades": 2698263
+  },
+  {
+    "date": "2025-05-03",
+    "day": 3,
+    "open": 96887.13,
+    "high": 96935.67,
+    "low": 95753.01,
+    "close": 95856.42,
+    "volume": 9723.34838,
+    "quoteVolume": 935906144.9651498,
+    "performance": -1.0638255049974197,
+    "volatility": 1.2206574805136694,
+    "heatmapIntensity": 0.10638255049974196,
+    "trend": "down",
+    "numberOfTrades": 1181239
+  },
+  {
+    "date": "2025-05-04",
+    "day": 4,
+    "open": 95856.42,
+    "high": 96304.48,
+    "low": 94151.38,
+    "close": 94277.62,
+    "volume": 11036.38342,
+    "quoteVolume": 1053542403.8531588,
+    "performance": -1.6470466975503602,
+    "volatility": 2.2461719308941346,
+    "heatmapIntensity": 0.164704669755036,
+    "trend": "down",
+    "numberOfTrades": 1674726
+  },
+  {
+    "date": "2025-05-05",
+    "day": 5,
+    "open": 94277.61,
+    "high": 95199,
+    "low": 93514.1,
+    "close": 94733.68,
+    "volume": 17251.18189,
+    "quoteVolume": 1626999380.1759968,
+    "performance": 0.48375218675992365,
+    "volatility": 1.7871687667941456,
+    "heatmapIntensity": 0.048375218675992364,
+    "trend": "up",
+    "numberOfTrades": 2623300
+  },
+  {
+    "date": "2025-05-06",
+    "day": 6,
+    "open": 94733.68,
+    "high": 96920.65,
+    "low": 93377,
+    "close": 96834.02,
+    "volume": 16122.64513,
+    "quoteVolume": 1526847764.5636683,
+    "performance": 2.217099557411906,
+    "volatility": 3.7406442988385904,
+    "heatmapIntensity": 0.22170995574119062,
+    "trend": "up",
+    "numberOfTrades": 2512960
+  },
+  {
+    "date": "2025-05-07",
+    "day": 7,
+    "open": 96834.02,
+    "high": 97732,
+    "low": 95784.61,
+    "close": 97030.5,
+    "volume": 16644.83854,
+    "quoteVolume": 1611730124.5924542,
+    "performance": 0.2029038967916399,
+    "volatility": 2.011059749455821,
+    "heatmapIntensity": 0.020290389679163988,
+    "trend": "up",
+    "numberOfTrades": 2849139
+  },
+  {
+    "date": "2025-05-08",
+    "day": 8,
+    "open": 97030.5,
+    "high": 104145.76,
+    "low": 96876.29,
+    "close": 103261.6,
+    "volume": 34962.02847,
+    "quoteVolume": 3508645830.5650144,
+    "performance": 6.421795208723037,
+    "volatility": 7.491943254955917,
+    "heatmapIntensity": 0.6421795208723038,
+    "trend": "up",
+    "numberOfTrades": 4991147
+  },
+  {
+    "date": "2025-05-09",
+    "day": 9,
+    "open": 103261.61,
+    "high": 104361.3,
+    "low": 102315.14,
+    "close": 102971.99,
+    "volume": 27617.39907,
+    "quoteVolume": 2847518447.981513,
+    "performance": -0.2804720941306216,
+    "volatility": 1.9815302124381011,
+    "heatmapIntensity": 0.028047209413062157,
+    "trend": "down",
+    "numberOfTrades": 4406929
+  },
+  {
+    "date": "2025-05-10",
+    "day": 10,
+    "open": 102971.99,
+    "high": 104984.57,
+    "low": 102818.76,
+    "close": 104809.53,
+    "volume": 15324.78611,
+    "quoteVolume": 1588386278.502415,
+    "performance": 1.7845046988020659,
+    "volatility": 2.103300130452963,
+    "heatmapIntensity": 0.17845046988020657,
+    "trend": "up",
+    "numberOfTrades": 2227845
+  },
+  {
+    "date": "2025-05-11",
+    "day": 11,
+    "open": 104809.53,
+    "high": 104972,
+    "low": 103345.06,
+    "close": 104118,
+    "volume": 17987.12197,
+    "quoteVolume": 1873381777.2124255,
+    "performance": -0.6597968715249451,
+    "volatility": 1.552282507134611,
+    "heatmapIntensity": 0.06597968715249451,
+    "trend": "down",
+    "numberOfTrades": 3100176
+  },
+  {
+    "date": "2025-05-12",
+    "day": 12,
+    "open": 104118,
+    "high": 105819.45,
+    "low": 100718.37,
+    "close": 102791.32,
+    "volume": 31272.77792,
+    "quoteVolume": 3242348937.383069,
+    "performance": -1.2742081100289988,
+    "volatility": 4.899325764997409,
+    "heatmapIntensity": 0.12742081100289987,
+    "trend": "down",
+    "numberOfTrades": 5298407
+  },
+  {
+    "date": "2025-05-13",
+    "day": 13,
+    "open": 102791.32,
+    "high": 104976.25,
+    "low": 101429.7,
+    "close": 104103.72,
+    "volume": 21253.42409,
+    "quoteVolume": 2197244118.152367,
+    "performance": 1.2767615008738034,
+    "volatility": 3.450242685861027,
+    "heatmapIntensity": 0.12767615008738034,
+    "trend": "up",
+    "numberOfTrades": 3703531
+  },
+  {
+    "date": "2025-05-14",
+    "day": 14,
+    "open": 104103.72,
+    "high": 104356.95,
+    "low": 102602.05,
+    "close": 103507.82,
+    "volume": 16452.9081,
+    "quoteVolume": 1704708279.3884108,
+    "performance": -0.5724099004339078,
+    "volatility": 1.6857226619759544,
+    "heatmapIntensity": 0.05724099004339078,
+    "trend": "down",
+    "numberOfTrades": 3025221
+  },
+  {
+    "date": "2025-05-15",
+    "day": 15,
+    "open": 103507.83,
+    "high": 104192.7,
+    "low": 101383.07,
+    "close": 103763.71,
+    "volume": 17998.98604,
+    "quoteVolume": 1850183474.5292037,
+    "performance": 0.2472083512909165,
+    "volatility": 2.714413006243093,
+    "heatmapIntensity": 0.02472083512909165,
+    "trend": "up",
+    "numberOfTrades": 4139477
+  },
+  {
+    "date": "2025-05-16",
+    "day": 16,
+    "open": 103763.71,
+    "high": 104550.33,
+    "low": 103100.49,
+    "close": 103463.9,
+    "volume": 15683.88024,
+    "quoteVolume": 1628832372.3241482,
+    "performance": -0.28893531274085343,
+    "volatility": 1.3972515053673356,
+    "heatmapIntensity": 0.028893531274085345,
+    "trend": "down",
+    "numberOfTrades": 3237442
+  },
+  {
+    "date": "2025-05-17",
+    "day": 17,
+    "open": 103463.9,
+    "high": 103709.86,
+    "low": 102612.5,
+    "close": 103126.65,
+    "volume": 11250.89622,
+    "quoteVolume": 1160418362.950618,
+    "performance": -0.32595910264353073,
+    "volatility": 1.0606211441865236,
+    "heatmapIntensity": 0.03259591026435307,
+    "trend": "down",
+    "numberOfTrades": 2568597
+  },
+  {
+    "date": "2025-05-18",
+    "day": 18,
+    "open": 103126.65,
+    "high": 106660,
+    "low": 103105.09,
+    "close": 106454.26,
+    "volume": 21599.98726,
+    "quoteVolume": 2262214972.0749383,
+    "performance": 3.226721705786041,
+    "volatility": 3.4471303004606506,
+    "heatmapIntensity": 0.3226721705786041,
+    "trend": "up",
+    "numberOfTrades": 3193300
+  },
+  {
+    "date": "2025-05-19",
+    "day": 19,
+    "open": 106454.27,
+    "high": 107108.62,
+    "low": 102000,
+    "close": 105573.74,
+    "volume": 30260.03524,
+    "quoteVolume": 3150324504.5954514,
+    "performance": -0.827143899441515,
+    "volatility": 4.798886883541632,
+    "heatmapIntensity": 0.0827143899441515,
+    "trend": "down",
+    "numberOfTrades": 4881371
+  },
+  {
+    "date": "2025-05-20",
+    "day": 20,
+    "open": 105573.73,
+    "high": 107320,
+    "low": 104184.72,
+    "close": 106849.99,
+    "volume": 23705.48275,
+    "quoteVolume": 2509102444.669598,
+    "performance": 1.2088802773189973,
+    "volatility": 2.9697539340515853,
+    "heatmapIntensity": 0.12088802773189973,
+    "trend": "up",
+    "numberOfTrades": 3878351
+  },
+  {
+    "date": "2025-05-21",
+    "day": 21,
+    "open": 106850,
+    "high": 110797.38,
+    "low": 106100.01,
+    "close": 109643.99,
+    "volume": 45531.040345,
+    "quoteVolume": 4914709514.320026,
+    "performance": 2.6148713149274734,
+    "volatility": 4.396228357510537,
+    "heatmapIntensity": 0.2614871314927473,
+    "trend": "up",
+    "numberOfTrades": 6835279
+  },
+  {
+    "date": "2025-05-22",
+    "day": 22,
+    "open": 109643.99,
+    "high": 111980,
+    "low": 109177.37,
+    "close": 111696.21,
+    "volume": 31630.77313,
+    "quoteVolume": 3509432834.573417,
+    "performance": 1.8717122570968105,
+    "volatility": 2.5561182149609882,
+    "heatmapIntensity": 0.18717122570968106,
+    "trend": "up",
+    "numberOfTrades": 5794216
+  },
+  {
+    "date": "2025-05-23",
+    "day": 23,
+    "open": 111696.22,
+    "high": 111800,
+    "low": 106800,
+    "close": 107318.3,
+    "volume": 31737.72309,
+    "quoteVolume": 3469704446.3904047,
+    "performance": -3.9194880542958375,
+    "volatility": 4.476427223768181,
+    "heatmapIntensity": 0.39194880542958377,
+    "trend": "down",
+    "numberOfTrades": 5251192
+  },
+  {
+    "date": "2025-05-24",
+    "day": 24,
+    "open": 107318.3,
+    "high": 109506.03,
+    "low": 106875.41,
+    "close": 107761.91,
+    "volume": 16782.53129,
+    "quoteVolume": 1819958819.7748587,
+    "performance": 0.4133591381898526,
+    "volatility": 2.4512315234214435,
+    "heatmapIntensity": 0.041335913818985257,
+    "trend": "up",
+    "numberOfTrades": 2805418
+  },
+  {
+    "date": "2025-05-25",
+    "day": 25,
+    "open": 107761.9,
+    "high": 109299.99,
+    "low": 106600.64,
+    "close": 109004.19,
+    "volume": 17710.04695,
+    "quoteVolume": 1904366455.425858,
+    "performance": 1.1528100376849408,
+    "volatility": 2.5049205702572115,
+    "heatmapIntensity": 0.11528100376849408,
+    "trend": "up",
+    "numberOfTrades": 3151168
+  },
+  {
+    "date": "2025-05-26",
+    "day": 26,
+    "open": 109004.2,
+    "high": 110422.22,
+    "low": 108670.58,
+    "close": 109434.79,
+    "volume": 14649.11593,
+    "quoteVolume": 1605578282.107903,
+    "performance": 0.39502147623669226,
+    "volatility": 1.6069472552433752,
+    "heatmapIntensity": 0.03950214762366923,
+    "trend": "up",
+    "numberOfTrades": 2887863
+  },
+  {
+    "date": "2025-05-27",
+    "day": 27,
+    "open": 109434.78,
+    "high": 110718,
+    "low": 107516.57,
+    "close": 108938.17,
+    "volume": 21276.65635,
+    "quoteVolume": 2327603851.119265,
+    "performance": -0.45379540215642644,
+    "volatility": 2.925422795202762,
+    "heatmapIntensity": 0.045379540215642646,
+    "trend": "down",
+    "numberOfTrades": 3735509
+  },
+  {
+    "date": "2025-05-28",
+    "day": 28,
+    "open": 108938.17,
+    "high": 109284.7,
+    "low": 106769.43,
+    "close": 107781.78,
+    "volume": 15633.78829,
+    "quoteVolume": 1689136748.5130312,
+    "performance": -1.0615103962183314,
+    "volatility": 2.308896872418551,
+    "heatmapIntensity": 0.10615103962183314,
+    "trend": "down",
+    "numberOfTrades": 2933262
+  },
+  {
+    "date": "2025-05-29",
+    "day": 29,
+    "open": 107781.78,
+    "high": 108891.91,
+    "low": 105322.86,
+    "close": 105589.75,
+    "volume": 19834.70116,
+    "quoteVolume": 2128639017.5081618,
+    "performance": -2.033766746104953,
+    "volatility": 3.3113667263613604,
+    "heatmapIntensity": 0.2033766746104953,
+    "trend": "down",
+    "numberOfTrades": 3774926
+  },
+  {
+    "date": "2025-05-30",
+    "day": 30,
+    "open": 105589.75,
+    "high": 106313.12,
+    "low": 103621,
+    "close": 103985.48,
+    "volume": 23706.49799,
+    "quoteVolume": 2493078549.591861,
+    "performance": -1.5193425498213644,
+    "volatility": 2.5496035363280956,
+    "heatmapIntensity": 0.15193425498213645,
+    "trend": "down",
+    "numberOfTrades": 4307572
+  },
+  {
+    "date": "2025-05-31",
+    "day": 31,
+    "open": 103985.47,
+    "high": 104900,
+    "low": 103068.55,
+    "close": 104591.88,
+    "volume": 11289.35922,
+    "quoteVolume": 1174000801.5070379,
+    "performance": 0.5831680137619261,
+    "volatility": 1.7612556831257262,
+    "heatmapIntensity": 0.058316801376192606,
+    "trend": "up",
+    "numberOfTrades": 2343787
+  },
+  {
+    "date": "2025-06-01",
+    "day": 1,
+    "open": 104591.88,
+    "high": 105866.91,
+    "low": 103752.49,
+    "close": 105642.93,
+    "volume": 9709.70006,
+    "quoteVolume": 1016188486.9505996,
+    "performance": 1.0049059257754889,
+    "volatility": 2.021590968629685,
+    "heatmapIntensity": 0.10049059257754889,
+    "trend": "up",
+    "numberOfTrades": 1939359
+  },
+  {
+    "date": "2025-06-02",
+    "day": 2,
+    "open": 105642.93,
+    "high": 105935.63,
+    "low": 103659.88,
+    "close": 105857.99,
+    "volume": 13453.98813,
+    "quoteVolume": 1409004206.9863732,
+    "performance": 0.20357254385126597,
+    "volatility": 2.154190535987595,
+    "heatmapIntensity": 0.020357254385126596,
+    "trend": "up",
+    "numberOfTrades": 2997656
+  },
+  {
+    "date": "2025-06-03",
+    "day": 3,
+    "open": 105858,
+    "high": 106794.67,
+    "low": 104872.5,
+    "close": 105376.89,
+    "volume": 13259.52634,
+    "quoteVolume": 1402493746.5993218,
+    "performance": -0.45448619849232047,
+    "volatility": 1.8158004118725066,
+    "heatmapIntensity": 0.04544861984923205,
+    "trend": "down",
+    "numberOfTrades": 2470698
+  },
+  {
+    "date": "2025-06-04",
+    "day": 4,
+    "open": 105376.9,
+    "high": 106000,
+    "low": 104179,
+    "close": 104696.86,
+    "volume": 14034.89482,
+    "quoteVolume": 1476928482.3688781,
+    "performance": -0.6453406771313197,
+    "volatility": 1.72808272021667,
+    "heatmapIntensity": 0.06453406771313197,
+    "trend": "down",
+    "numberOfTrades": 2274464
+  },
+  {
+    "date": "2025-06-05",
+    "day": 5,
+    "open": 104696.86,
+    "high": 105909.71,
+    "low": 100372.26,
+    "close": 101508.68,
+    "volume": 22321.50154,
+    "quoteVolume": 2301567892.5305448,
+    "performance": -3.045153407657123,
+    "volatility": 5.28903159082327,
+    "heatmapIntensity": 0.3045153407657123,
+    "trend": "down",
+    "numberOfTrades": 3963295
+  },
+  {
+    "date": "2025-06-06",
+    "day": 6,
+    "open": 101508.69,
+    "high": 105333,
+    "low": 101095.8,
+    "close": 104288.44,
+    "volume": 15839.07385,
+    "quoteVolume": 1642382404.9355752,
+    "performance": 2.738435497492875,
+    "volatility": 4.174223901421638,
+    "heatmapIntensity": 0.2738435497492875,
+    "trend": "up",
+    "numberOfTrades": 2709327
+  },
+  {
+    "date": "2025-06-07",
+    "day": 7,
+    "open": 104288.43,
+    "high": 105900,
+    "low": 103871.09,
+    "close": 105552.15,
+    "volume": 8344.93206,
+    "quoteVolume": 877915380.9548231,
+    "performance": 1.2117547459483293,
+    "volatility": 1.9454794745687547,
+    "heatmapIntensity": 0.12117547459483294,
+    "trend": "up",
+    "numberOfTrades": 1402494
+  },
+  {
+    "date": "2025-06-08",
+    "day": 8,
+    "open": 105552.15,
+    "high": 106488.14,
+    "low": 104964.14,
+    "close": 105734,
+    "volume": 8048.06305,
+    "quoteVolume": 850887129.4282976,
+    "performance": 0.17228450581064036,
+    "volatility": 1.4438360563948722,
+    "heatmapIntensity": 0.017228450581064036,
+    "trend": "up",
+    "numberOfTrades": 1295154
+  },
+  {
+    "date": "2025-06-09",
+    "day": 9,
+    "open": 105734.01,
+    "high": 110530.17,
+    "low": 105318.37,
+    "close": 110263.02,
+    "volume": 19975.37451,
+    "quoteVolume": 2154922022.221173,
+    "performance": 4.283399447349069,
+    "volatility": 4.929161392819589,
+    "heatmapIntensity": 0.4283399447349069,
+    "trend": "up",
+    "numberOfTrades": 2839846
+  },
+  {
+    "date": "2025-06-10",
+    "day": 10,
+    "open": 110263.02,
+    "high": 110400,
+    "low": 108331.03,
+    "close": 110274.39,
+    "volume": 17071.82839,
+    "quoteVolume": 1867620550.192173,
+    "performance": 0.010311707406522461,
+    "volatility": 1.8763951867090172,
+    "heatmapIntensity": 0.0010311707406522462,
+    "trend": "up",
+    "numberOfTrades": 3003420
+  },
+  {
+    "date": "2025-06-11",
+    "day": 11,
+    "open": 110274.39,
+    "high": 110392.01,
+    "low": 108064,
+    "close": 108645.12,
+    "volume": 13115.91638,
+    "quoteVolume": 1434884639.7506304,
+    "performance": -1.4774690660270295,
+    "volatility": 2.1111066676496644,
+    "heatmapIntensity": 0.14774690660270295,
+    "trend": "down",
+    "numberOfTrades": 2667014
+  },
+  {
+    "date": "2025-06-12",
+    "day": 12,
+    "open": 108645.13,
+    "high": 108813.55,
+    "low": 105671.72,
+    "close": 105671.73,
+    "volume": 17778.67218,
+    "quoteVolume": 1908309274.0868344,
+    "performance": -2.7368000756223574,
+    "volatility": 2.891827733097656,
+    "heatmapIntensity": 0.27368000756223576,
+    "trend": "down",
+    "numberOfTrades": 3517420
+  },
+  {
+    "date": "2025-06-13",
+    "day": 13,
+    "open": 105671.74,
+    "high": 106179.53,
+    "low": 102664.31,
+    "close": 106066.59,
+    "volume": 26180.81734,
+    "quoteVolume": 2735461890.6929703,
+    "performance": 0.37365713860677535,
+    "volatility": 3.326546908378722,
+    "heatmapIntensity": 0.03736571386067754,
+    "trend": "up",
+    "numberOfTrades": 5452577
+  },
+  {
+    "date": "2025-06-14",
+    "day": 14,
+    "open": 106066.59,
+    "high": 106252,
+    "low": 104300,
+    "close": 105414.64,
+    "volume": 8798.93969,
+    "quoteVolume": 925568614.1784065,
+    "performance": -0.6146610351101107,
+    "volatility": 1.8403533101233858,
+    "heatmapIntensity": 0.061466103511011075,
+    "trend": "down",
+    "numberOfTrades": 1521776
+  },
+  {
+    "date": "2025-06-15",
+    "day": 15,
+    "open": 105414.63,
+    "high": 106128.57,
+    "low": 104494.53,
+    "close": 105594.01,
+    "volume": 7164.20047,
+    "quoteVolume": 754596887.8748004,
+    "performance": 0.17016613348639567,
+    "volatility": 1.5501074186761439,
+    "heatmapIntensity": 0.01701661334863957,
+    "trend": "up",
+    "numberOfTrades": 1564768
+  },
+  {
+    "date": "2025-06-16",
+    "day": 16,
+    "open": 105594.02,
+    "high": 108952.38,
+    "low": 104980.37,
+    "close": 106794.53,
+    "volume": 14922.6654,
+    "quoteVolume": 1599849840.7325244,
+    "performance": 1.1369109727994016,
+    "volatility": 3.761586120123099,
+    "heatmapIntensity": 0.11369109727994016,
+    "trend": "up",
+    "numberOfTrades": 2928998
+  },
+  {
+    "date": "2025-06-17",
+    "day": 17,
+    "open": 106794.53,
+    "high": 107771.34,
+    "low": 103371.02,
+    "close": 104551.17,
+    "volume": 17866.33025,
+    "quoteVolume": 1883173484.8990998,
+    "performance": -2.100631933114927,
+    "volatility": 4.120360846196891,
+    "heatmapIntensity": 0.2100631933114927,
+    "trend": "down",
+    "numberOfTrades": 3723010
+  },
+  {
+    "date": "2025-06-18",
+    "day": 18,
+    "open": 104551.17,
+    "high": 105550.27,
+    "low": 103500,
+    "close": 104886.78,
+    "volume": 13968.64167,
+    "quoteVolume": 1461383024.3622093,
+    "performance": 0.32100071190021173,
+    "volatility": 1.9610206179423952,
+    "heatmapIntensity": 0.03210007119002117,
+    "trend": "up",
+    "numberOfTrades": 3468170
+  },
+  {
+    "date": "2025-06-19",
+    "day": 19,
+    "open": 104886.79,
+    "high": 105226.17,
+    "low": 103929.27,
+    "close": 104658.59,
+    "volume": 7678.60737,
+    "quoteVolume": 803402575.962045,
+    "performance": -0.2175679129850357,
+    "volatility": 1.2364760138049742,
+    "heatmapIntensity": 0.02175679129850357,
+    "trend": "down",
+    "numberOfTrades": 1718045
+  },
+  {
+    "date": "2025-06-20",
+    "day": 20,
+    "open": 104658.59,
+    "high": 106524.65,
+    "low": 102345,
+    "close": 103297.99,
+    "volume": 16419.06283,
+    "quoteVolume": 1714411911.0114017,
+    "performance": -1.300036623845201,
+    "volatility": 3.9936043472399105,
+    "heatmapIntensity": 0.1300036623845201,
+    "trend": "down",
+    "numberOfTrades": 3029404
+  },
+  {
+    "date": "2025-06-21",
+    "day": 21,
+    "open": 103297.98,
+    "high": 103982.64,
+    "low": 100837.9,
+    "close": 102120.01,
+    "volume": 11154.21332,
+    "quoteVolume": 1144829784.7306418,
+    "performance": -1.1403611183877953,
+    "volatility": 3.0443383307205094,
+    "heatmapIntensity": 0.11403611183877953,
+    "trend": "down",
+    "numberOfTrades": 2172578
+  },
+  {
+    "date": "2025-06-22",
+    "day": 22,
+    "open": 102120.02,
+    "high": 103399.62,
+    "low": 98200,
+    "close": 100963.87,
+    "volume": 28746.41072,
+    "quoteVolume": 2892695407.8086877,
+    "performance": -1.1321482310716435,
+    "volatility": 5.091675461873192,
+    "heatmapIntensity": 0.11321482310716435,
+    "trend": "down",
+    "numberOfTrades": 5121309
+  },
+  {
+    "date": "2025-06-23",
+    "day": 23,
+    "open": 100963.87,
+    "high": 106074.2,
+    "low": 99613.33,
+    "close": 105333.93,
+    "volume": 27666.50609,
+    "quoteVolume": 2836166831.044449,
+    "performance": 4.328340425144161,
+    "volatility": 6.399190126131255,
+    "heatmapIntensity": 0.43283404251441604,
+    "trend": "up",
+    "numberOfTrades": 4944207
+  },
+  {
+    "date": "2025-06-24",
+    "day": 24,
+    "open": 105333.94,
+    "high": 106290,
+    "low": 104622.02,
+    "close": 106083,
+    "volume": 14651.69335,
+    "quoteVolume": 1543451113.4563613,
+    "performance": 0.7111288156504899,
+    "volatility": 1.5835161962041826,
+    "heatmapIntensity": 0.071112881565049,
+    "trend": "up",
+    "numberOfTrades": 2973481
+  },
+  {
+    "date": "2025-06-25",
+    "day": 25,
+    "open": 106083,
+    "high": 108135.3,
+    "low": 105808.03,
+    "close": 107340.58,
+    "volume": 16701.15551,
+    "quoteVolume": 1789545470.94629,
+    "performance": 1.1854679826173862,
+    "volatility": 2.1938199334483417,
+    "heatmapIntensity": 0.11854679826173861,
+    "trend": "up",
+    "numberOfTrades": 2988892
+  },
+  {
+    "date": "2025-06-26",
+    "day": 26,
+    "open": 107340.59,
+    "high": 108272.45,
+    "low": 106562.5,
+    "close": 106947.06,
+    "volume": 10573.27279,
+    "quoteVolume": 1136093974.6816013,
+    "performance": -0.3666180705733021,
+    "volatility": 1.5930134164531768,
+    "heatmapIntensity": 0.03666180705733021,
+    "trend": "down",
+    "numberOfTrades": 2597742
+  },
+  {
+    "date": "2025-06-27",
+    "day": 27,
+    "open": 106947.06,
+    "high": 107735.34,
+    "low": 106356.76,
+    "close": 107047.59,
+    "volume": 12232.44042,
+    "quoteVolume": 1308420348.9100094,
+    "performance": 0.09399977895605437,
+    "volatility": 1.2890302921838168,
+    "heatmapIntensity": 0.009399977895605437,
+    "trend": "up",
+    "numberOfTrades": 2304499
+  },
+  {
+    "date": "2025-06-28",
+    "day": 28,
+    "open": 107047.58,
+    "high": 107577.75,
+    "low": 106811.51,
+    "close": 107296.79,
+    "volume": 3282.17352,
+    "quoteVolume": 352025390.6031135,
+    "performance": 0.23280302086230426,
+    "volatility": 0.7157938554052368,
+    "heatmapIntensity": 0.023280302086230425,
+    "trend": "up",
+    "numberOfTrades": 653305
+  },
+  {
+    "date": "2025-06-29",
+    "day": 29,
+    "open": 107296.79,
+    "high": 108528.5,
+    "low": 107172.52,
+    "close": 108356.93,
+    "volume": 6831.7364,
+    "quoteVolume": 736708189.9495684,
+    "performance": 0.9880444699230979,
+    "volatility": 1.263765672766162,
+    "heatmapIntensity": 0.0988044469923098,
+    "trend": "up",
+    "numberOfTrades": 1223202
+  },
+  {
+    "date": "2025-06-30",
+    "day": 30,
+    "open": 108356.93,
+    "high": 108789.99,
+    "low": 106733.33,
+    "close": 107146.5,
+    "volume": 9754.12491,
+    "quoteVolume": 1050407152.345058,
+    "performance": -1.1170766835125294,
+    "volatility": 1.8980419618754458,
+    "heatmapIntensity": 0.11170766835125294,
+    "trend": "down",
+    "numberOfTrades": 1773485
+  },
+  {
+    "date": "2025-07-01",
+    "day": 1,
+    "open": 107146.51,
+    "high": 107540,
+    "low": 105250.85,
+    "close": 105681.14,
+    "volume": 10505.62437,
+    "quoteVolume": 1117432945.8926365,
+    "performance": -1.3676320395316612,
+    "volatility": 2.1364671607129284,
+    "heatmapIntensity": 0.13676320395316613,
+    "trend": "down",
+    "numberOfTrades": 2013289
+  },
+  {
+    "date": "2025-07-02",
+    "day": 2,
+    "open": 105681.13,
+    "high": 109730,
+    "low": 105100.19,
+    "close": 108849.6,
+    "volume": 17691.89592,
+    "quoteVolume": 1915699005.8772898,
+    "performance": 2.9981416739204065,
+    "volatility": 4.380924011694423,
+    "heatmapIntensity": 0.29981416739204064,
+    "trend": "up",
+    "numberOfTrades": 2444708
+  },
+  {
+    "date": "2025-07-03",
+    "day": 3,
+    "open": 108849.59,
+    "high": 110529.18,
+    "low": 108530.4,
+    "close": 109584.78,
+    "volume": 13047.08225,
+    "quoteVolume": 1429459048.6383262,
+    "performance": 0.67541825375732,
+    "volatility": 1.836277013078321,
+    "heatmapIntensity": 0.067541825375732,
+    "trend": "up",
+    "numberOfTrades": 2568944
+  },
+  {
+    "date": "2025-07-04",
+    "day": 4,
+    "open": 109584.77,
+    "high": 109767.59,
+    "low": 107245,
+    "close": 107984.24,
+    "volume": 11793.86615,
+    "quoteVolume": 1276215111.6683652,
+    "performance": -1.4605405477421716,
+    "volatility": 2.3019530907442673,
+    "heatmapIntensity": 0.14605405477421715,
+    "trend": "down",
+    "numberOfTrades": 1975212
+  },
+  {
+    "date": "2025-07-05",
+    "day": 5,
+    "open": 107984.25,
+    "high": 108420.56,
+    "low": 107756.31,
+    "close": 108198.12,
+    "volume": 3736.9757,
+    "quoteVolume": 403928702.1967476,
+    "performance": 0.1980566610408419,
+    "volatility": 0.615136003630159,
+    "heatmapIntensity": 0.019805666104084192,
+    "trend": "up",
+    "numberOfTrades": 710020
+  },
+  {
+    "date": "2025-07-06",
+    "day": 6,
+    "open": 108198.12,
+    "high": 109700,
+    "low": 107800.01,
+    "close": 109203.84,
+    "volume": 6447.607,
+    "quoteVolume": 700733299.5112199,
+    "performance": 0.9295170747883617,
+    "volatility": 1.7560286629749253,
+    "heatmapIntensity": 0.09295170747883616,
+    "trend": "up",
+    "numberOfTrades": 1256591
+  },
+  {
+    "date": "2025-07-07",
+    "day": 7,
+    "open": 109203.85,
+    "high": 109700,
+    "low": 107513.2,
+    "close": 108262.94,
+    "volume": 9405.37601,
+    "quoteVolume": 1020848316.0537041,
+    "performance": -0.8616088169052679,
+    "volatility": 2.002493501831669,
+    "heatmapIntensity": 0.0861608816905268,
+    "trend": "down",
+    "numberOfTrades": 1961940
+  },
+  {
+    "date": "2025-07-08",
+    "day": 8,
+    "open": 108262.94,
+    "high": 109216.56,
+    "low": 107429.57,
+    "close": 108922.98,
+    "volume": 9216.0208,
+    "quoteVolume": 1000112813.4398943,
+    "performance": 0.6096638424930947,
+    "volatility": 1.6506017664031574,
+    "heatmapIntensity": 0.06096638424930947,
+    "trend": "up",
+    "numberOfTrades": 1723244
+  },
+  {
+    "date": "2025-07-09",
+    "day": 9,
+    "open": 108922.99,
+    "high": 111999.79,
+    "low": 108324.53,
+    "close": 111233.99,
+    "volume": 17282.2865,
+    "quoteVolume": 1902054744.194924,
+    "performance": 2.121682484111022,
+    "volatility": 3.3741820712046144,
+    "heatmapIntensity": 0.21216824841110218,
+    "trend": "up",
+    "numberOfTrades": 2328484
+  },
+  {
+    "date": "2025-07-10",
+    "day": 10,
+    "open": 111234,
+    "high": 116868,
+    "low": 110500,
+    "close": 116010,
+    "volume": 24883.450665,
+    "quoteVolume": 2826460280.4452233,
+    "performance": 4.293651221748746,
+    "volatility": 5.7248682956649946,
+    "heatmapIntensity": 0.4293651221748746,
+    "trend": "up",
+    "numberOfTrades": 3227017
+  },
+  {
+    "date": "2025-07-11",
+    "day": 11,
+    "open": 116010.01,
+    "high": 118869.98,
+    "low": 115222.22,
+    "close": 117527.66,
+    "volume": 25873.521148,
+    "quoteVolume": 3039521803.027247,
+    "performance": 1.3082060763549703,
+    "volatility": 3.1443493539910867,
+    "heatmapIntensity": 0.13082060763549702,
+    "trend": "up",
+    "numberOfTrades": 3708194
+  },
+  {
+    "date": "2025-07-12",
+    "day": 12,
+    "open": 117527.66,
+    "high": 118200,
+    "low": 116900.05,
+    "close": 117420,
+    "volume": 8446.60437,
+    "quoteVolume": 993093353.4068904,
+    "performance": -0.09160396795103679,
+    "volatility": 1.1060800495815173,
+    "heatmapIntensity": 0.009160396795103679,
+    "trend": "down",
+    "numberOfTrades": 1441851
+  },
+  {
+    "date": "2025-07-13",
+    "day": 13,
+    "open": 117420,
+    "high": 119488,
+    "low": 117224.79,
+    "close": 119086.64,
+    "volume": 9550.792947,
+    "quoteVolume": 1132096857.0116916,
+    "performance": 1.4193834099812632,
+    "volatility": 1.927448475557832,
+    "heatmapIntensity": 0.14193834099812633,
+    "trend": "up",
+    "numberOfTrades": 1650283
+  },
+  {
+    "date": "2025-07-14",
+    "day": 14,
+    "open": 119086.65,
+    "high": 123218,
+    "low": 118905.18,
+    "close": 119841.18,
+    "volume": 27269.348877,
+    "quoteVolume": 3299746181.0770736,
+    "performance": 0.6335974687338999,
+    "volatility": 3.6215814283129193,
+    "heatmapIntensity": 0.06335974687339,
+    "trend": "up",
+    "numberOfTrades": 4076133
+  },
+  {
+    "date": "2025-07-15",
+    "day": 15,
+    "open": 119841.17,
+    "high": 119940.83,
+    "low": 115736.92,
+    "close": 117758.09,
+    "volume": 32018.46083,
+    "quoteVolume": 3755258445.553272,
+    "performance": -1.7382006534148504,
+    "volatility": 3.5079013330727693,
+    "heatmapIntensity": 0.17382006534148503,
+    "trend": "down",
+    "numberOfTrades": 3805374
+  },
+  {
+    "date": "2025-07-16",
+    "day": 16,
+    "open": 117758.08,
+    "high": 120063.84,
+    "low": 117017.29,
+    "close": 118630.43,
+    "volume": 17039.90851,
+    "quoteVolume": 2023850383.7234874,
+    "performance": 0.7407984233438515,
+    "volatility": 2.5871260808600165,
+    "heatmapIntensity": 0.07407984233438515,
+    "trend": "up",
+    "numberOfTrades": 2429625
+  },
+  {
+    "date": "2025-07-17",
+    "day": 17,
+    "open": 118630.44,
+    "high": 120998.71,
+    "low": 117453.57,
+    "close": 119177.56,
+    "volume": 15728.57651,
+    "quoteVolume": 1869114355.1231644,
+    "performance": 0.4611969744021815,
+    "volatility": 2.9883898264222903,
+    "heatmapIntensity": 0.04611969744021815,
+    "trend": "up",
+    "numberOfTrades": 2347985
+  },
+  {
+    "date": "2025-07-18",
+    "day": 18,
+    "open": 119177.56,
+    "high": 120820.71,
+    "low": 116812.76,
+    "close": 117924.84,
+    "volume": 19924.66266,
+    "quoteVolume": 2367355518.470308,
+    "performance": -1.051137479236864,
+    "volatility": 3.3630072641191946,
+    "heatmapIntensity": 0.1051137479236864,
+    "trend": "down",
+    "numberOfTrades": 2805236
+  },
+  {
+    "date": "2025-07-19",
+    "day": 19,
+    "open": 117924.84,
+    "high": 118499.9,
+    "low": 117277.34,
+    "close": 117840,
+    "volume": 6635.80306,
+    "quoteVolume": 783327898.4969696,
+    "performance": -0.07194412983727305,
+    "volatility": 1.036728139720179,
+    "heatmapIntensity": 0.007194412983727305,
+    "trend": "down",
+    "numberOfTrades": 1133382
+  },
+  {
+    "date": "2025-07-20",
+    "day": 20,
+    "open": 117840.01,
+    "high": 118856.8,
+    "low": 116467.02,
+    "close": 117265.12,
+    "volume": 12962.92889,
+    "quoteVolume": 1528864683.816082,
+    "performance": -0.4878563740787187,
+    "volatility": 2.027986929057456,
+    "heatmapIntensity": 0.04878563740787187,
+    "trend": "down",
+    "numberOfTrades": 1615935
+  },
+  {
+    "date": "2025-07-21",
+    "day": 21,
+    "open": 117265.11,
+    "high": 119676.73,
+    "low": 116515,
+    "close": 117380.36,
+    "volume": 17107.33128,
+    "quoteVolume": 2020783266.9633648,
+    "performance": 0.09828157752975288,
+    "volatility": 2.6962239663613463,
+    "heatmapIntensity": 0.009828157752975287,
+    "trend": "up",
+    "numberOfTrades": 2509543
+  },
+  {
+    "date": "2025-07-22",
+    "day": 22,
+    "open": 117380.36,
+    "high": 120247.8,
+    "low": 116128,
+    "close": 119954.42,
+    "volume": 20959.12973,
+    "quoteVolume": 2481252763.651911,
+    "performance": 2.1929222231044423,
+    "volatility": 3.509786475352438,
+    "heatmapIntensity": 0.21929222231044423,
+    "trend": "up",
+    "numberOfTrades": 2778733
+  },
+  {
+    "date": "2025-07-23",
+    "day": 23,
+    "open": 119954.43,
+    "high": 120090,
+    "low": 117301,
+    "close": 118755.99,
+    "volume": 14558.75083,
+    "quoteVolume": 1722126986.886661,
+    "performance": -0.9990794004022927,
+    "volatility": 2.3250496042538824,
+    "heatmapIntensity": 0.09990794004022926,
+    "trend": "down",
+    "numberOfTrades": 2101404
+  },
+  {
+    "date": "2025-07-24",
+    "day": 24,
+    "open": 118756,
+    "high": 119450,
+    "low": 117103.1,
+    "close": 118340.99,
+    "volume": 15806.89043,
+    "quoteVolume": 1873181653.2018075,
+    "performance": -0.349464448112091,
+    "volatility": 1.9762369901310202,
+    "heatmapIntensity": 0.0349464448112091,
+    "trend": "down",
+    "numberOfTrades": 2081435
+  },
+  {
+    "date": "2025-07-25",
+    "day": 25,
+    "open": 118340.98,
+    "high": 118451.57,
+    "low": 114723.16,
+    "close": 117614.31,
+    "volume": 38406.34873,
+    "quoteVolume": 4456778786.620494,
+    "performance": -0.6140476443578533,
+    "volatility": 3.150565425434202,
+    "heatmapIntensity": 0.06140476443578533,
+    "trend": "down",
+    "numberOfTrades": 3282355
+  },
+  {
+    "date": "2025-07-26",
+    "day": 26,
+    "open": 117614.31,
+    "high": 118297.35,
+    "low": 117138.38,
+    "close": 117919.99,
+    "volume": 6991.67206,
+    "quoteVolume": 823629079.7493103,
+    "performance": 0.25990034716014365,
+    "volatility": 0.9853988005371125,
+    "heatmapIntensity": 0.025990034716014365,
+    "trend": "up",
+    "numberOfTrades": 790372
+  },
+  {
+    "date": "2025-07-27",
+    "day": 27,
+    "open": 117919.99,
+    "high": 119766.65,
+    "low": 117825.5,
+    "close": 119415.55,
+    "volume": 9328.30919,
+    "quoteVolume": 1107883542.1607983,
+    "performance": 1.2682836896441372,
+    "volatility": 1.64615855208264,
+    "heatmapIntensity": 0.1268283689644137,
+    "trend": "up",
+    "numberOfTrades": 1095080
+  },
+  {
+    "date": "2025-07-28",
+    "day": 28,
+    "open": 119415.56,
+    "high": 119800,
+    "low": 118475.47,
+    "close": 118815.14,
+    "volume": 6161.6406,
+    "quoteVolume": 734057375.8527102,
+    "performance": -0.5027987977446141,
+    "volatility": 1.1091770620177126,
+    "heatmapIntensity": 0.05027987977446141,
+    "trend": "down",
+    "numberOfTrades": 728266
+  }
+]
