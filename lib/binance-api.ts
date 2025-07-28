@@ -1,4 +1,3 @@
-// Binance API integration for cryptocurrency market data
 export interface BinanceKlineData {
   openTime: number
   open: string
@@ -54,7 +53,7 @@ export interface ProcessedMarketData {
 class BinanceAPI {
   private baseUrl = "https://api.binance.com/api/v3"
 
-  // Get historical kline/candlestick data
+  // Get historical data
   async getKlineData(symbol: string, interval: "1d" | "1w" | "1M", limit = 30): Promise<BinanceKlineData[]> {
     try {
       const response = await fetch(`${this.baseUrl}/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`)
@@ -64,7 +63,7 @@ class BinanceAPI {
       }
 
       const data = await response.json()
-
+      console.log("hehe",data)
       return data.map((kline: any[]) => ({
         openTime: kline[0],
         open: kline[1],
@@ -84,38 +83,32 @@ class BinanceAPI {
     }
   }
 
-  // Get 24hr ticker statistics
+  // Get 24hr ticker for the coin
   async get24hrTicker(symbol: string): Promise<BinanceTicker24hr> {
     try {
       const response = await fetch(`${this.baseUrl}/ticker/24hr?symbol=${symbol}`)
-
       if (!response.ok) {
         throw new Error(`Binance API error: ${response.status}`)
       }
-
       return await response.json()
     } catch (error) {
       console.error("Error fetching Binance 24hr ticker:", error)
       throw error
     }
   }
-
-  // Get current average price
+  // Get average price
   async getAvgPrice(symbol: string): Promise<{ mins: number; price: string }> {
     try {
       const response = await fetch(`${this.baseUrl}/avgPrice?symbol=${symbol}`)
-
       if (!response.ok) {
         throw new Error(`Binance API error: ${response.status}`)
       }
-
       return await response.json()
     } catch (error) {
       console.error("Error fetching Binance average price:", error)
       throw error
     }
   }
-
   // Process raw kline data into calendar format
   processKlineData(klineData: BinanceKlineData[]): ProcessedMarketData[] {
     return klineData.map((kline, index) => {
@@ -125,13 +118,10 @@ class BinanceAPI {
       const close = Number.parseFloat(kline.close)
       const volume = Number.parseFloat(kline.volume)
       const quoteVolume = Number.parseFloat(kline.quoteAssetVolume)
-
       // Calculate performance (price change percentage)
       const performance = ((close - open) / open) * 100
-
       // Calculate volatility (high-low range as percentage of open)
       const volatility = ((high - low) / open) * 100
-
       // Create date from timestamp
       const date = new Date(kline.openTime)
       const day = date.getDate()
