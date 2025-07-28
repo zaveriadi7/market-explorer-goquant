@@ -247,7 +247,7 @@ export default function MarketSeasonalityExplorer() {
             onClose={() => setRightPanelOpen(false)}
             selectedDate={selectedDate}
             selectedInstrument={selectedInstrument}
-            timeframe={timeframe}
+            timeframe={"1w"}
           />
         </div>
 

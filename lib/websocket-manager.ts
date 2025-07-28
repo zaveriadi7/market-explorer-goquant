@@ -58,7 +58,6 @@ class WebSocketManager {
     try {
       const ws = new WebSocket(wsUrl)
       this.connections.set(streamName, ws)
-
       const connectionTimeout = setTimeout(() => {
         if (ws.readyState === WebSocket.CONNECTING) {
           console.warn(`connection timeout for ${streamName}`)
@@ -81,7 +80,7 @@ class WebSocketManager {
             callback({
               symbol: data.s,
               price: data.c,
-              priceChange: data.P,
+              priceChange: data.p,
               priceChangePercent: data.P,
               volume: data.v,
               high: data.h,
