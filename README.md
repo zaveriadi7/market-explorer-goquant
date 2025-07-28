@@ -14,7 +14,7 @@ The platform is designed to help traders, analysts, and researchers **visualize,
 - **Timeframe Flexibility** –Choose between Daily (`1d`), Weekly (`1w`), and Monthly (`1M`) 
 -  **Alert Functionality** – Set custom Alerts for user specified currency and thresholds.
 - **Responsive UI** – Optimized for mobile and desktop  
-- ** Export & Share** :-  Export selected data to:
+- **Export & Share** :-  Export selected data to:
     
     -   **PDF**
         
@@ -103,6 +103,8 @@ root/
 ├── tailwind.config.ts
 ├── Testing.txt
 └── tsconfig.json
+
+Testing.txt is a documentation of all the Test cases and data samples as received from BINANCE API.
 
 ```
 ##  `lib/` Folder Explained
