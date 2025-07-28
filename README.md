@@ -63,9 +63,6 @@ root/
 ├── components/
 │   ├── charts/
 │   │   ├── animated-market-overview.tsx
-│   │   ├── candlestick-chart.tsx
-│   │   ├── market-overview-dashboard.tsx
-│   │   ├── price-chart.tsx
 │   │   ├── realtime-price-chart.tsx
 │   │   ├── technical-indicators-chart.tsx
 │   │   ├── volatility-chart.tsx
@@ -80,10 +77,9 @@ root/
 ├── hooks/
 │   ├── use-detailed-metrics.ts
 │   ├── use-market-data.ts
-│   ├── use-mobile.tsx
 │   ├── use-realtime-data.ts
 │   ├── use-technical-data.ts
-│   └── use-toast.ts
+│   
 ├── lib/
 │   ├── binance-api.ts
 │   ├── utils.ts
